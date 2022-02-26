@@ -1,8 +1,6 @@
 <template>
   <div class="flex flex-col justify-center items-center">
-    <cb-button>
-      Connect Wallet
-    </cb-button>
+    <cb-button :disabled="connecting"> {{buttonText}} </cb-button>
     <scroll-label>scroll down for info.</scroll-label>
   </div>
 </template>
@@ -15,6 +13,17 @@ export default {
    components: {
      cbButton,
      scrollLabel
+   },
+   data() {
+     return {
+       connecting: false,
+     }
+   },
+   computed: {
+     buttonText() {
+       if(this.connecting) return 'connecting...'
+       return 'Connect'
+     }
    }
 }
 </script>
