@@ -2,53 +2,62 @@
   <div class="flex flex-col items-center">
     <div class="flex items-center space-x-4">
       
-      <button 
-        class="rounded-full w-14 h-14 bg-zinc-300 text-3xl"
-        @click="decrement"
-      >
+      <counter-button
+        :disabled="atMin || minting"
+        @click="decrement">
         -
-      </button>
+      </counter-button>
 
       <div class="text-9xl font-black flex">
         <div class="w-24 mr-1 text-center">{{firstDigit}}</div>
         <div class="w-24 text-center">{{secondDigit}}</div>
       </div>
 
-      <button 
-        class="rounded-full w-14 h-14 bg-zinc-300 text-3xl"
-        @click="increment"
-      >
+      <counter-button 
+        :disabled="atMax || minting"
+        @click="increment">
         +
-      </button>
+      </counter-button>
+
     </div>
-    <cb-button @click="mint">Mint</cb-button>
-    <scroll-label>scroll down for info - please read before minting.</scroll-label>
+    <cb-button @click="mint" :disabled="minting || mintedLimit">{{ mintBtnText }}</cb-button>
+    <scroll-label>scroll down for info -<br/> please read before minting.</scroll-label>
   </div>
 </template>
 
 <script>
 import cbButton from "./shared/cbButton.vue"
 import scrollLabel from "./shared/scrollLabel.vue"
+import counterButton from "./shared/counterButton.vue"
 export default {
    name: 'MintPanel',
    components: {
      cbButton,
-     scrollLabel
+     scrollLabel,
+     counterButton
    },
    data() {
      return {
        numToMint: 1,
+       numMinted: 0,
        max: 20,
+       minting: false,
      }
    },
    computed: {
-     atMax: function() { return this.numToMint >= 20 },
+     atMax: function() { return this.numToMint + this.numMinted >= this.max },
      atMin: function() { return this.numToMint <= 1 },
+     mintedLimit: function() { return this.numMinted >= this.max },
      firstDigit() {
        return parseInt(this.numToMint / 10)
      },
      secondDigit() {
        return this.numToMint % 10
+     },
+     mintBtnText() {
+       if(this.mintedLimit) return 'You hit your limit'
+       else if(this.minting) return 'Minting...'
+       return 'Mint'
      }
    },
    methods:{
