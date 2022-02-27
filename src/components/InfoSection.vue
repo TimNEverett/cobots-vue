@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white bg-black flex flex-col justify-center py-16 px-4 lg:px-64">
+  <div class="text-white bg-black flex flex-col justify-center py-16 px-4 w-[720px]">
     <div class="font-extrabold text-5xl text-center">INFO</div>
     <div class="divide-y text-xl">
       <div class="text-center space-y-4 py-16">

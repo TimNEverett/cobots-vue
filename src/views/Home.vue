@@ -12,17 +12,19 @@
       src="../images/Bot-Illustration.svg" 
       class="">
   </div>
-  <div class="bg-black text-white">
+  <div class="bg-black text-white flex flex-col items-center">
     <my-bots-section />
     <info-section />
   </div>
 </template>
+
 <script>
 import InfoSection from "@/components/InfoSection.vue"
 import WalletButton from "@/components/walletButton.vue"
 import MyBotsSection from "@/components/MyBots/index.vue"
 import ConnectWalletPanel from "@/components/ConnectWalletPanel.vue"
 import MintPanel from "@/components/MintPanel.vue"
+import { mapGetters } from "vuex";
 export default {
    name: 'Home',
    components: {
@@ -32,10 +34,8 @@ export default {
      ConnectWalletPanel,
      MintPanel
    },
-   data() {
-     return {
-       walletConnected: false,
-     }
+   computed: {
+     ...mapGetters('eth', ['walletConnected'])
    }
 }
 </script>
