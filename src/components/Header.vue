@@ -19,13 +19,13 @@
 
     <div class="text-white flex space-x-4 pr-8">
       <a class="py-1">
-        <img alt='twitter-logo' src="assets/twitter-logo.svg"/>
+        <img alt='twitter-logo' src="../images/twitter-logo.svg"/>
       </a>
       <a>
-        <img alt='opensea-logo' src="assets/opensea-logo.svg"/>
+        <img alt='opensea-logo' src="../images/opensea-logo.svg"/>
       </a>
       <a>
-        <img alt='etherscan-lgo' src="assets/etherscan-logo-.svg"/>
+        <img alt='etherscan-lgo' src="../images/etherscan-logo-.svg"/>
       </a>
     </div>
   </div>
