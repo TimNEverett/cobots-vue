@@ -2,17 +2,19 @@
   <div>
     <header-vue />
     <main>
-      <router-view />
+      <home />
     </main>
   </div>
 </template>
 
 <script>
 import HeaderVue from "@/components/Header.vue"
+import Home from "./views/Home.vue"
 export default {
    name: 'App',
    components: {
-     HeaderVue
+     HeaderVue,
+     Home
    }
 }
 </script>
