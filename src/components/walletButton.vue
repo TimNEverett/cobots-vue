@@ -8,17 +8,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
    name: 'walletButton',
-   data() {
-     return {
-       address: '0x25522B4FD92cEa7749227EC2a4e4e3F640b58ae5'
-     }
-   },
    computed: {
+     ...mapGetters('eth', ['walletAddress']),
      addressTruncated() {
-       let start = this.address.substring(0, 4)
-       let end = this.address.substring(this.address.length - 4, this.address.length)
+       let start = this.walletAddress.substring(0, 4)
+       let end = this.walletAddress.substring(this.walletAddress.length - 4, this.walletAddress.length)
        return `${start}...${end}`
      }
    }
