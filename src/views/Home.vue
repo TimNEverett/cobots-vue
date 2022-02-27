@@ -4,23 +4,38 @@
       <div class="absolute right-4 top-24">
         <wallet-button />
       </div>
+      <mint-panel v-if="walletConnected"/>
+      <connect-wallet-panel  v-else/>
       
-      <router-view></router-view>
     </div>
     <img 
       src="../images/Bot-Illustration.svg" 
       class="">
   </div>
-  <InfoSection />
+  <div class="bg-black text-white">
+    <my-bots-section />
+    <info-section />
+  </div>
 </template>
 <script>
 import InfoSection from "@/components/InfoSection.vue"
 import WalletButton from "@/components/walletButton.vue"
+import MyBotsSection from "@/components/MyBots/index.vue"
+import ConnectWalletPanel from "@/components/ConnectWalletPanel.vue"
+import MintPanel from "@/components/MintPanel.vue"
 export default {
    name: 'Home',
    components: {
      InfoSection,
-     WalletButton
+     WalletButton,
+     MyBotsSection,
+     ConnectWalletPanel,
+     MintPanel
+   },
+   data() {
+     return {
+       walletConnected: false,
+     }
    }
 }
 </script>
