@@ -28,7 +28,7 @@
 <script>
 import cbButton from "./shared/cbButton.vue"
 import scrollLabel from "./shared/scrollLabel.vue"
-import counterButton from "./shared/counterButton.vue"
+import counterButton from "./counterButton.vue"
 export default {
    name: 'MintPanel',
    components: {
