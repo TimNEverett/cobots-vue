@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Prompt', ...defaultTheme.fontFamily.sans],
+        sans: ['AvenirNext', ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
         '9xl': '9rem' 
