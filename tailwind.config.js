@@ -10,6 +10,9 @@ module.exports = {
       },
       fontSize: {
         '9xl': '9rem' 
+      },
+      fill: {
+        silver2: '#919699'
       }
     },
   },
