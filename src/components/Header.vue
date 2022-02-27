@@ -1,6 +1,6 @@
 <template>
   <div class="flex-col lg:flex-row flex items-center justify-between pl-9 py-4 w-full bg-black space-y-4">
-    <Logo />
+    <Logo class="fill-white"/>
 
     <div class="flex-col lg:flex-row flex items-center space-y-4 lg:space-y-0 lg:divide-x-2 divide-gray-500 text-xl">
       <div class="flex items-center px-2">
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="text-white flex space-x-4 pr-6">
+    <div class="text-white flex space-x-4 pr-8">
       <a class="py-1">
         <img alt='twitter-logo' src="assets/twitter-logo.svg"/>
       </a>
@@ -40,7 +40,7 @@ export default {
      Logo,
    },
    data() {
-     return {
+      return {
        mintedCount: 10,
        mintPrice: 0.05,
        mintEndDate: Date.now() + (1000 * 60 * 60 * 130),

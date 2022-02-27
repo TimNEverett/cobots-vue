@@ -105,7 +105,7 @@
       </info-sub-section>
 
     </div>
-    <Logo class="mt-16"/>
+    <Logo class="mt-16 fill-silver2"/>
   </div>
 </template>
 
