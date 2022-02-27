@@ -11,16 +11,21 @@
       src="../images/Bot-Illustration.svg" 
       class="">
   </div>
-  <InfoSection />
+  <div class="bg-black text-white">
+    <my-bots-section />
+    <info-section />
+  </div>
 </template>
 <script>
 import InfoSection from "@/components/InfoSection.vue"
 import WalletButton from "@/components/walletButton.vue"
+import MyBotsSection from "@/components/MyBots/index.vue"
 export default {
    name: 'Home',
    components: {
      InfoSection,
-     WalletButton
+     WalletButton,
+     MyBotsSection
    }
 }
 </script>
