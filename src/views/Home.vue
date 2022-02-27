@@ -8,7 +8,7 @@
       <router-view></router-view>
     </div>
     <img 
-      src="assets/Bot-Illustration.svg" 
+      src="../images/Bot-Illustration.svg" 
       class="">
   </div>
   <InfoSection />
