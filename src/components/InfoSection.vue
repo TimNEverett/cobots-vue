@@ -10,7 +10,9 @@
 
       <info-sub-section 
         question="Who created Co-Bots?">
-        Co-Bots was created by smlg with smart contract help from clemlaflemme.eth. We met as early members of the Chain Runners community! smlg is also a proud member of the Noadz, CrypToadz, and FRWC communities.
+        Co-Bots was created by 
+        <a class="underline underline-offset-4 text-sky-400" href="https://twitter.com/s_m_l_g">smlg</a> 
+        with smart contract help from clemlaflemme.eth. We met as early members of the Chain Runners community! smlg is also a proud member of the Noadz, CrypToadz, and FRWC communities.
       </info-sub-section>
 
       <info-sub-section 

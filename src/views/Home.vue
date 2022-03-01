@@ -1,7 +1,7 @@
 <template>
   <div class="h-80 lg:h-[calc(100vh-5rem)] flex flex-col justify-between">
     <div class="flex flex-col justify-center items-center h-full">
-      <div class="absolute right-4 top-24">
+      <div v-if="walletConnected" class="absolute right-4 top-24">
         <wallet-button />
       </div>
       <mint-panel v-if="walletConnected"/>
@@ -13,7 +13,7 @@
       class="">
   </div>
   <div class="bg-black text-white flex flex-col items-center">
-    <my-bots-section />
+    <my-bots-section v-if="hasBots" />
     <info-section />
   </div>
 </template>
@@ -24,18 +24,51 @@ import WalletButton from "@/components/walletButton.vue"
 import MyBotsSection from "@/components/MyBots/index.vue"
 import ConnectWalletPanel from "@/components/ConnectWalletPanel.vue"
 import MintPanel from "@/components/MintPanel.vue"
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+
 export default {
-   name: 'Home',
-   components: {
-     InfoSection,
-     WalletButton,
-     MyBotsSection,
-     ConnectWalletPanel,
-     MintPanel
-   },
-   computed: {
-     ...mapGetters('eth', ['walletConnected'])
-   }
+  name: 'Home',
+  components: {
+    InfoSection,
+    WalletButton,
+    MyBotsSection,
+    ConnectWalletPanel,
+    MintPanel,
+  },
+  computed: {
+    ...mapGetters('eth', ['walletConnected']),
+    ...mapGetters('bots', ['hasBots'])
+  },
+  methods: {
+    ...mapActions('eth', ['setWalletAddress']),
+    accountsChanged(accounts) {
+      console.log('changed', accounts)
+      let address = accounts.length > 0 ? accounts[0] : ""
+      this.setWalletAddress(address)
+    },
+    async connected() {
+      console.log('connected')
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      this.setWalletAddress(accounts[0])
+    },
+    disconnected() {
+      console.log('disconnected')
+      this.setWalletAddress('')
+    }
+  },
+  mounted() {
+    if(window.ethereum != 'undefined'){
+      window.ethereum.on('accountsChanged', this.accountsChanged);
+      window.ethereum.on('connect', this.connected);
+      window.ethereum.on('disconnect', this.disconnected);
+    }
+  },
+  beforeUnmount() {
+    if(window.ethereum != 'undefined'){
+      window.ethereum.on('accountsChanged', this.accountsChanged );
+      window.ethereum.on('connect', this.connected);
+      window.ethereum.on('disconnect', this.disconnected);
+    }
+  }
 }
 </script>

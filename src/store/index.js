@@ -1,9 +1,11 @@
 import { createStore } from 'vuex'
 import eth from './eth.store'
+import bots from './bots.store'
 
 const store = createStore({
   modules: {
-    eth
+    eth,
+    bots
   }
 })
 

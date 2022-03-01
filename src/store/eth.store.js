@@ -1,16 +1,30 @@
+import {
+  connectMetaMask,
+  wcConnector
+} from '../services/wallet.service'
 export default {
   namespaced: true,
   state: () => ({ 
-    walletAddress: "1234567890"
+    walletAddress: "",
   }),
   mutations: { 
-    setWalletAddress(state, { walletAddress}) {
-      state.walletAddress = walletAddress
-    }
+    SET_WALLET_ADDRESS(state, address) {
+      state.walletAddress = address
+    },
   },
   actions: { 
-    connectWallet() {
+    async connectMetaMask({ commit, state }) {
+      if(state.walletAddress) return
 
+      let address = await connectMetaMask()
+      
+      commit('SET_WALLET_ADDRESS', address)
+    },
+    setWalletAddress({ commit }, address) {
+      commit('SET_WALLET_ADDRESS', address)
+    },
+    connectWC({ commit, state }) {
+      wcConnector.createSession()
     }
   },
   getters: { 
@@ -18,8 +32,7 @@ export default {
       return state.walletAddress
     }, 
     walletConnected(state) {
-      // return state.walletAddress.length > 0
-      return true
+      return state.walletAddress.length > 0
     }
   }
 }

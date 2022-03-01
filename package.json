@@ -2,7 +2,7 @@
   "name": "vite-vue3-tailwind-starter",
   "version": "0.0.0",
   "engines": {
-    "node": "14.x"
+    "node": "16.x"
   },
   "scripts": {
     "dev": "vite --host",
@@ -10,6 +10,8 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@walletconnect/client": "^1.7.1",
+    "@walletconnect/qrcode-modal": "^1.7.1",
     "vue": "^3.2.31",
     "vuex": "^4.0.2"
   },

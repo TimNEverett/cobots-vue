@@ -8,45 +8,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import BotCard from "./BotCard.vue"
 export default {
   name: 'MyBotsSection',
   components: {
     BotCard,
   },
-  data() {
-    return {
-      bots: [
-        {
-          id: 1,
-          svgUrl: "url1"
-        },
-        {
-          id: 2,
-          svgUrl: "url2"
-        },
-        {
-          id: 3,
-          svgUrl: "url3"
-        },
-        {
-          id: 4,
-          svgUrl: "url4"
-        },
-        {
-          id: 5,
-          svgUrl: "url5"
-        },
-        {
-          id: 6,
-          svgUrl: "url6"
-        },
-        {
-          id: 7,
-          svgUrl: "url7"
-        },
-      ]
-    }
+  computed: {
+    ...mapGetters('bots', ['allBots'])
   }
 }
 </script>
