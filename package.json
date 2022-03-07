@@ -10,7 +10,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@walletconnect/client": "^1.7.1",
+    "@walletconnect/client": "^1.7.3",
     "@walletconnect/qrcode-modal": "^1.7.1",
     "vue": "^3.2.31",
     "vue-scrollto": "^2.20.0",
