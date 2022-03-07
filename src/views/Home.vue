@@ -4,9 +4,9 @@
       <div v-if="walletConnected" class="absolute right-4 top-24">
         <wallet-button />
       </div>
-      <mint-panel v-if="walletConnected"/>
-      <connect-wallet-panel  v-else/>
-      
+      <connect-wallet-panel  v-if="!walletConnected"/>
+      <mint-panel v-else-if="!mintPhaseComplete"/>
+      <bonus-challenge-panel v-else-if="!rafflePhaseComplete"/>
     </div>
     <img 
       src="../images/Bot-Illustration.svg" 
@@ -24,6 +24,7 @@ import WalletButton from "@/components/walletButton.vue"
 import MyBotsSection from "@/components/MyBots/index.vue"
 import ConnectWalletPanel from "@/components/ConnectWalletPanel.vue"
 import MintPanel from "@/components/MintPanel.vue"
+import BonusChallengePanel from "@/components/BonusChallenge/index.vue"
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -34,9 +35,14 @@ export default {
     MyBotsSection,
     ConnectWalletPanel,
     MintPanel,
+    BonusChallengePanel
   },
   computed: {
-    ...mapGetters('eth', ['walletConnected']),
+    ...mapGetters('eth', [
+      'walletConnected', 
+      'mintPhaseComplete',
+      'rafflePhaseComplete',
+    ]),
     ...mapGetters('bots', ['hasBots'])
   },
   methods: {
@@ -47,7 +53,6 @@ export default {
       this.setWalletAddress(address)
     },
     async connected() {
-      console.log('connected')
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       this.setWalletAddress(accounts[0])
     },
