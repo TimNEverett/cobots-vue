@@ -1,56 +1,66 @@
 <template>
-  <div class="flex-col lg:flex-row flex items-center justify-between pl-9 py-4 w-full bg-black space-y-4">
-    <Logo class="fill-white"/>
-
-    <div class="flex-col lg:flex-row flex items-center space-y-4 lg:space-y-0 lg:divide-x-2 divide-gray-500 text-xl">
-      <div class="flex items-center px-2">
-        <p class="text-gray-500 font-bold mr-1">MINTED:</p>
-        <p class="text-white font-extrabold">{{ mintedCount }}/10,000</p>
-      </div>
-      <div class="flex items-center px-2">
-        <p class="text-gray-500 font-bold mr-1">MINT PRICE:</p>
-        <p class="text-white font-extrabold">{{ mintPrice }} ETH</p>
-      </div>
-      <div class="flex items-center px-2">
-        <p class="text-gray-500 font-bold mr-1">TIME LEFT:</p>
-        <p class="text-white font-extrabold">{{ timeLeftString }}</p>
-      </div>
-    </div>
-
-    <div class="text-white flex space-x-4 pr-8">
-      <a class="py-1">
-        <img alt='twitter-logo' src="../images/twitter-logo.svg"/>
-      </a>
-      <a>
-        <img alt='opensea-logo' src="../images/opensea-logo.svg"/>
-      </a>
-      <a>
-        <img alt='etherscan-lgo' src="../images/etherscan-logo-.svg"/>
-      </a>
-    </div>
+<div class="bg-black">
+  <div class="flex py-2 pl-4 justify-between h-12 sm:hidden ">
+    <Logo class=" fill-white"/>
+    <social-media-buttons class="w-24"/>
   </div>
+  <div class="flex-row flex items-center justify-center sm:justify-between pl-2 md:pl-9 sm:py-4 w-full md:h-20">
+    <Logo class="hidden sm:block fill-white"/>
 
+    <div class="flex-row flex items-center justify-between sm:justify-center text-sm sm:text-xl">
+      <div class="hidden lg:flex items-center px-2 ">
+        <p class="text-cobots-silver-2 mr-1">MINTED:</p>
+        <p class="text-white font-extrabold">
+          {{ numMinted.toLocaleString('en-US') }}/{{mintLimit.toLocaleString('en-US')}}
+          </p>
+      </div>
+      <div v-if="!mintPhaseComplete" class="flex items-center px-2">
+        <p class="text-cobots-silver-2 mr-1">MINT PRICE:</p>
+        <p class="text-white font-black">{{ mintPrice }} ETH</p>
+      </div>
+      <div class="flex items-center px-2">
+        <p class="text-cobots-silver-2 font mr-1">TIME LEFT:</p>
+        <p 
+          class="font-black text-white" 
+          :class="{'text-cobots-red': timeLeft < 86400000 && timeLeft !== null}"
+        >
+          {{ timeLeftString }}
+        </p>
+      </div>
+    </div>
+
+    <social-media-buttons class="hidden sm:flex"/>
+  </div>
+  </div>
 </template>
 
 <script>
 import Logo from "./logo.vue";
+import SocialMediaButtons from "@/components/SocialMediaButtons.vue"
+import { mapGetters } from "vuex";
 export default {
    name: 'Header',
    components: {
      Logo,
+     SocialMediaButtons
    },
    data() {
       return {
-       mintedCount: 10,
-       mintPrice: 0.05,
-       mintEndDate: Date.now() + (1000 * 60 * 60 * 130),
-       now: Date.now(),
+       timeLeft: null,
        interval: null,
      }
    },
    computed: {
-     timeLeftString() {
-      var msec = this.mintEndDate - this.now
+      ...mapGetters('mint', [
+        'numMinted',
+        'mintPrice',
+        'mintLimit',
+        'mintPhaseComplete',
+        'mintEndDate',
+      ]),
+      timeLeftString() {
+      if(this.timeLeft === null) return '--:--:--'
+      var msec = this.timeLeft
       var hh = Math.floor(msec / 1000 / 60 / 60);
       msec -= hh * 1000 * 60 * 60;
       var mm = Math.floor(msec / 1000 / 60);
@@ -60,11 +70,13 @@ export default {
       if(mm < 10) mm = `0${mm}`
       if(ss < 10) ss = `0${ss}`
       return `${hh}:${mm}:${ss}`
-     }
+      },
    },
    mounted() {
      this.interval = setInterval(() => {
-       this.now = Date.now()
+       let newVal = this.mintEndDate - Date.now()
+       this.timeLeft = newVal > 0 ? newVal : 0
+       if(newVal < 0) this.interval = null
      }, 1000)
    },
    beforeUnmount() {

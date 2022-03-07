@@ -21,7 +21,12 @@
 
     </div>
     <cb-button @click="mint" :disabled="minting || mintedLimit">{{ mintBtnText }}</cb-button>
-    <scroll-label>scroll down for info -<br/> please read before minting.</scroll-label>
+    <scroll-label v-if="mintComplete" class="text-cobots-green">
+      mint comlete! it may take a <br />minute to show up in your wallet
+    </scroll-label>
+    <scroll-label v-else class="text-cobots-silver-2" >
+      scroll down for info -<br/> please read before minting.
+    </scroll-label>
   </div>
 </template>
 
@@ -29,6 +34,7 @@
 import cbButton from "./shared/cbButton.vue"
 import scrollLabel from "./shared/scrollLabel.vue"
 import counterButton from "./counterButton.vue"
+import { mapGetters } from 'vuex'
 export default {
    name: 'MintPanel',
    components: {
@@ -42,23 +48,28 @@ export default {
        numMinted: 0,
        max: 20,
        minting: false,
+       mintComplete: true
      }
    },
    computed: {
-     atMax: function() { return this.numToMint + this.numMinted >= this.max },
-     atMin: function() { return this.numToMint <= 1 },
-     mintedLimit: function() { return this.numMinted >= this.max },
-     firstDigit() {
-       return parseInt(this.numToMint / 10)
-     },
-     secondDigit() {
-       return this.numToMint % 10
-     },
-     mintBtnText() {
-       if(this.mintedLimit) return 'You hit your limit'
-       else if(this.minting) return 'Minting...'
-       return 'Mint'
-     }
+      ...mapGetters(['mint/numMinted', 'mint/mintLimit']),
+      totalMinted: function () { return this['mint/numMinted'] },
+      atMax: function() { 
+        return this.numToMint + this.numMinted >= this.max || this.numToMint + this.totalMinted >= this["mint/mintLimit"] 
+      },
+      atMin: function() { return this.numToMint <= 1 },
+      mintedLimit: function() { return this.numMinted >= this.max },
+      firstDigit() {
+        return parseInt(this.numToMint / 10)
+      },
+      secondDigit() {
+        return this.numToMint % 10
+      },
+      mintBtnText() {
+        if(this.mintedLimit) return 'You hit your limit'
+        else if(this.minting) return 'Minting...'
+        return 'Mint'
+      }
    },
    methods:{
      increment() {
@@ -72,7 +83,8 @@ export default {
        }
      },
      mint() {
-       console.log('MINT')
+       this.numToMint = 1
+       this.numMinted += this.numToMint
      }
    }
 }
