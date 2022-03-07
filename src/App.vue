@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen h-screen">
+  <div >
     <header-vue />
     <main>
       <home />

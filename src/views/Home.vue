@@ -1,20 +1,22 @@
 <template>
-  <div class="h-[calc(100vh-5rem)] flex flex-col justify-between">
-    <div class="flex flex-col justify-center items-center h-full">
-      <div v-if="walletConnected" class="absolute sm:right-4 top-20 sm:top-24">
-        <wallet-button @viewBots="scrollToMyBots"/>
+  <div class="overflow-hidden overscroll-none">
+    <div class="h-[calc(100vh-5rem)] flex flex-col justify-between">
+      <div class="flex flex-col justify-center items-center h-full">
+        <div v-if="walletConnected" class="absolute sm:right-4 top-20 sm:top-24">
+          <wallet-button @viewBots="scrollToMyBots"/>
+        </div>
+        <connect-wallet-panel  v-if="!walletConnected"/>
+        <mint-panel v-else-if="!mintPhaseComplete"/>
+        <bonus-challenge-panel @moreDetailsClick="scrollToBonusPrizes" v-else-if="!rafflePhaseComplete"/>
       </div>
-      <connect-wallet-panel  v-if="!walletConnected"/>
-      <mint-panel v-else-if="!mintPhaseComplete"/>
-      <bonus-challenge-panel @moreDetailsClick="scrollToBonusPrizes" v-else-if="!rafflePhaseComplete"/>
+      <img 
+        src="../images/Bot-Illustration.svg" 
+        class="">
     </div>
-    <img 
-      src="../images/Bot-Illustration.svg" 
-      class="">
-  </div>
-  <div class="bg-black text-white flex flex-col items-center">
-    <my-bots-section ref="my-bots" v-if="hasBots" />
-    <info-section  ref="info-section"/>
+    <div class="bg-black text-white flex flex-col items-center">
+      <my-bots-section ref="my-bots" v-if="hasBots" />
+      <info-section  ref="info-section"/>
+    </div>
   </div>
 </template>
 
