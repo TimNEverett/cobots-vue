@@ -1,7 +1,28 @@
 export default {
   namespaced: true,
   state: () => ({ 
-    bots: [],
+    bots: [
+      {
+        id: 1,
+        svgUrl: '1',
+        color: 'red'
+      },
+      {
+        id: 2,
+        svgUrl: '2',
+        color: 'blue'
+      },
+      {
+        id: 3,
+        svgUrl: '3',
+        color: 'red'
+      },
+      {
+        id: 4,
+        svgUrl: '4',
+        color: 'red'
+      },
+    ],
   }),
   mutations: { 
     SET_BOTS(state, bots) {

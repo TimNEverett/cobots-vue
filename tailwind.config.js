@@ -11,8 +11,11 @@ module.exports = {
       fontSize: {
         '9xl': '9rem' 
       },
-      fill: {
-        silver2: '#919699'
+      colors: {
+        'cobots-green': '#45E545',
+        'cobots-red': '#FF5967',
+        'cobots-silver': '#CED5D9',
+        'cobots-silver-2': '#919699',
       }
     },
   },

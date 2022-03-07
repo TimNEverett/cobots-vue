@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center space-y-4">
+  <div class="flex flex-col items-center space-y-2 sm:space-y-4">
     <button 
       class=" w-40 rounded-full border-2 border-zinc-300 px-4 py-2 font-black"
       @click="logout"
@@ -9,6 +9,7 @@
     <button 
       class="uppercase underline font-black text-sky-400"
       v-if="hasBots"
+      @click="$emit('view-bots')"
     >
       View my bots
     </button>
@@ -19,6 +20,7 @@
 import { mapGetters, mapActions } from 'vuex';
 export default {
    name: 'walletButton',
+   emits: ['view-bots'],
    computed: {
      ...mapGetters('eth', ['walletAddress']),
      ...mapGetters('bots', ['hasBots']),

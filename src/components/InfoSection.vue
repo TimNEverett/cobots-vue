@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white bg-black flex flex-col justify-center py-16 px-4 w-[720px]">
+  <div class="text-white bg-black flex flex-col justify-center py-16 px-4 lg:w-[720px]">
     <div class="font-extrabold text-5xl text-center">INFO</div>
     <div class="divide-y text-xl">
       <div class="text-center space-y-4 py-16">
@@ -20,7 +20,8 @@
         The raffle will be drawn 24 hours after the last Co-Bot is minted. The 10 winning Co-Bots will be randomly drawn by the Co-Bots smart contract, one winner every 30 seconds. The winning Co-Bots will appear on this site as they're drawn and the prizes will be sent to the associated wallets immediately by the contract.
       </info-sub-section>
 
-      <info-sub-section 
+      <info-sub-section
+        ref="bonus-prizes-info"
         question="Did someone say BONUS PRIZES?">
         <div>
           Yep! In addition to the 10 main prizes, 
@@ -107,7 +108,7 @@
       </info-sub-section>
 
     </div>
-    <Logo class="mt-16 fill-silver2"/>
+    <Logo class="mt-16 fill-cobots-silver-2"/>
   </div>
 </template>
 

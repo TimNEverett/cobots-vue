@@ -1,20 +1,20 @@
 <template>
-  <div class="h-80 lg:h-[calc(100vh-5rem)] flex flex-col justify-between">
+  <div class="h-[calc(100vh-5rem)] flex flex-col justify-between">
     <div class="flex flex-col justify-center items-center h-full">
-      <div v-if="walletConnected" class="absolute right-4 top-24">
-        <wallet-button />
+      <div v-if="walletConnected" class="absolute sm:right-4 top-20 sm:top-24">
+        <wallet-button @viewBots="scrollToMyBots"/>
       </div>
       <connect-wallet-panel  v-if="!walletConnected"/>
       <mint-panel v-else-if="!mintPhaseComplete"/>
-      <bonus-challenge-panel v-else-if="!rafflePhaseComplete"/>
+      <bonus-challenge-panel @moreDetailsClick="scrollToBonusPrizes" v-else-if="!rafflePhaseComplete"/>
     </div>
     <img 
       src="../images/Bot-Illustration.svg" 
       class="">
   </div>
   <div class="bg-black text-white flex flex-col items-center">
-    <my-bots-section v-if="hasBots" />
-    <info-section />
+    <my-bots-section ref="my-bots" v-if="hasBots" />
+    <info-section  ref="info-section"/>
   </div>
 </template>
 
@@ -39,11 +39,11 @@ export default {
   },
   computed: {
     ...mapGetters('eth', [
-      'walletConnected', 
-      'mintPhaseComplete',
+      'walletConnected',
       'rafflePhaseComplete',
     ]),
-    ...mapGetters('bots', ['hasBots'])
+    ...mapGetters('mint', ['mintPhaseComplete']),
+    ...mapGetters('bots', ['hasBots']),
   },
   methods: {
     ...mapActions('eth', ['setWalletAddress']),
@@ -59,6 +59,14 @@ export default {
     disconnected() {
       console.log('disconnected')
       this.setWalletAddress('')
+    },
+    scrollToBonusPrizes() {
+      const el = this.$refs['info-section'].$refs['bonus-prizes-info'].$el
+      this.$scrollTo(el, 600, { offset: 20 })
+    },
+    scrollToMyBots() {
+      const el = this.$refs['my-bots'].$el
+      this.$scrollTo(el, 600, { offset: 20 })
     }
   },
   mounted() {
@@ -67,6 +75,7 @@ export default {
       window.ethereum.on('connect', this.connected);
       window.ethereum.on('disconnect', this.disconnected);
     }
+    this.connected()
   },
   beforeUnmount() {
     if(window.ethereum != 'undefined'){

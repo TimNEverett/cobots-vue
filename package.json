@@ -13,6 +13,7 @@
     "@walletconnect/client": "^1.7.1",
     "@walletconnect/qrcode-modal": "^1.7.1",
     "vue": "^3.2.31",
+    "vue-scrollto": "^2.20.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
