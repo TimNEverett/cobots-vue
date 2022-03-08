@@ -6,15 +6,14 @@ export default {
   namespaced: true,
   state: () => ({ 
     walletAddress: "",
-    mintPhaseComplete: true,
-    rafflePhaseComplete: false,
+    readyToRaffle: true,
   }),
   mutations: { 
     SET_WALLET_ADDRESS(state, address) {
       state.walletAddress = address
     },
-    SET_RAFFLE_PHASE_COMPELTE(state, isComplete) {
-      state.rafflePhaseComplete = isComplete
+    SET_READY_TO_RAFFLE(state, isReady) {
+      state.readyToRaffle = isReady
     },
   },
   actions: { 
@@ -39,8 +38,8 @@ export default {
     walletConnected(state) {
       return state.walletAddress.length > 0
     },
-    rafflePhaseComplete(state) {
-      return state.rafflePhaseComplete
+    readyToRaffle(state) {
+      return state.readyToRaffle
     }
   }
 }
