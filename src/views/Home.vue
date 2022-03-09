@@ -60,19 +60,6 @@ export default {
     ...mapActions('eth', ['setWalletAddress']),
     ...mapActions('mint', ['getIsMintedOut']),
     ...mapActions('bots', ['getMyBots']),
-    accountsChanged(accounts) {
-      console.log('changed', accounts)
-      let address = accounts.length > 0 ? accounts[0] : ""
-      this.setWalletAddress(address)
-    },
-    async connected() {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      this.setWalletAddress(accounts[0])
-    },
-    disconnected() {
-      console.log('disconnected')
-      this.setWalletAddress('')
-    },
     scrollToBonusPrizes() {
       const el = this.$refs['info-section'].$refs['bonus-prizes-info'].$el
       this.$scrollTo(el, 600, { offset: 20 })
@@ -83,21 +70,8 @@ export default {
     }
   },
   mounted() {
-    if(window.ethereum != 'undefined'){
-      window.ethereum.on('accountsChanged', this.accountsChanged);
-      window.ethereum.on('connect', this.connected);
-      window.ethereum.on('disconnect', this.disconnected);
-    }
-    this.connected()
     this.getIsMintedOut()
     this.getMyBots()
-  },
-  beforeUnmount() {
-    if(window.ethereum != 'undefined'){
-      window.ethereum.on('accountsChanged', this.accountsChanged );
-      window.ethereum.on('connect', this.connected);
-      window.ethereum.on('disconnect', this.disconnected);
-    }
   }
 }
 </script>

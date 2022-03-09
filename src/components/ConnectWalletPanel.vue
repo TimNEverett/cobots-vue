@@ -10,6 +10,7 @@
 import cbButton from "./shared/cbButton.vue"
 import scrollLabel from "./shared/scrollLabel.vue"
 import ConnectWalletModal from "./ConnectWalletModal.vue"
+
 export default {
    name: 'ConnectWalletPanel',
    components: {

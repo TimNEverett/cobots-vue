@@ -1,8 +1,7 @@
 <template>
   <div class="bg-black border-2 p-2 border-cobots-silver rounded-2xl space-y-2">
     <div class=" bg-white text-black rounded-lg w-52 h-52 flex justify-center items-center">
-
-      <img v-if="tokenURI" :src="tokenURI" />
+      <img v-if="tokenURI" :src="tokenURI" class="rounded-lg"/>
     </div>
 
     <button 

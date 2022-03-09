@@ -1,5 +1,3 @@
-import { contract } from "@/services/contract.service"
-import { ethers } from "ethers"
 export default {
   namespaced: true,
   state: () => ({ 
@@ -15,11 +13,6 @@ export default {
     },
   },
   actions: { 
-    async connectMetaMask({ commit, state }) {
-      let provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
-      contract.connect(signer)
-    },
     setWalletAddress({ commit }, address) {
       commit('SET_WALLET_ADDRESS', address)
     },
