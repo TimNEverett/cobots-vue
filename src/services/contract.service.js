@@ -1,14 +1,19 @@
 import { ethers } from "ethers";
 import abi from "./abi.json"
-
 import store from "@/store";
 
+const {
+  VITE_ETHERSCAN_ID,
+  VITE_INFURA_ID,
+  VITE_CONTRACT_ADDRESS
+} = import.meta.env
+
 export var provider = new ethers.getDefaultProvider('rinkeby', { 
-  etherscan: 'PXHYSCUGTRU3SDVJVA541C86GG7XI3DM6G',
-  infura: '9c92f09ade4e4b33b565f6de37f63f56',
+  etherscan: VITE_ETHERSCAN_ID,
+  infura: VITE_INFURA_ID
 });
 
-export var contract = new ethers.Contract('0xc9A489180Add3d7C4b6518EE253CC22e94bcfC03', abi, provider);
+export var contract = new ethers.Contract(VITE_CONTRACT_ADDRESS, abi, provider);
 
 const setSigner = () => {
   let provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -19,7 +24,7 @@ const setSigner = () => {
 const accountsChanged = (accounts) => {
   let address = accounts.length > 0 ? accounts[0] : ""
   setSigner()
-  store.dispatch('mint/setWalletAddress', address)
+  store.dispatch('eth/setWalletAddress', address)
 }
 const connected = async () => {
   const [ address ] = await window.ethereum.request({ method: 'eth_requestAccounts' });

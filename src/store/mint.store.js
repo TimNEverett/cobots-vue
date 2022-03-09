@@ -32,8 +32,11 @@ export default {
   },
   actions: { 
     async getIsMintedOut({ commit }) {
-      const result = await contract.isMintedOut()
-      commit('SET_MINT_PHASE_COMPELTE', result)
+      const mintedOut = await contract.isMintedOut()
+      commit('SET_MINT_PHASE_COMPELTE', mintedOut)
+
+      const totalSupply = await contract.totalSupply()
+      commit('SET_NUM_MINTED', totalSupply)
     },
     async mint({ commit }, numToMint) {
       contract.mintPublicSale(numToMint)
