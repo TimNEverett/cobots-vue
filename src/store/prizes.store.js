@@ -3,6 +3,7 @@ export default {
   state: () => ({ 
     prizesDrawn: [],
     bonusPrizesDrawn: [],
+    bonusPrizesUnlocked: false
   }),
   mutations: { 
     ADD_PRIZE_TO_PRIZES_DRAWN(state, prize) {
@@ -11,6 +12,9 @@ export default {
     ADD_PRIZE_TO_BONUS_PRIZES_DRAWN(state, prize) {
       state.bonusPrizesDrawn = [...state.bonusPrizesDrawn, prize]
     },
+    SET_BONUS_PRIZES_UNLOCKED(state, isUnLocked) {
+      state.bonusPrizesUnlocked = isUnLocked
+    }
   },
   actions: { 
   },
@@ -24,8 +28,11 @@ export default {
     bonusPrizesDrawn(state) {
       return state.bonusPrizesDrawn
     },
-    numBonuesPrizesDrawn(state) {
+    numBonusPrizesDrawn(state) {
       return state.bonusPrizesDrawn.length
+    },
+    bonusPrizesUnlocked(state) {
+      return state.bonusPrizesUnlocked
     }
   }
 }

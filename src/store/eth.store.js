@@ -1,7 +1,5 @@
-import {
-  connectMetaMask,
-  wcConnector
-} from '../services/wallet.service'
+import { contract } from "@/services/contract.service"
+import { ethers } from "ethers"
 export default {
   namespaced: true,
   state: () => ({ 
@@ -18,18 +16,13 @@ export default {
   },
   actions: { 
     async connectMetaMask({ commit, state }) {
-      if(state.walletAddress) return
-
-      let address = await connectMetaMask()
-      
-      commit('SET_WALLET_ADDRESS', address)
+      let provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      contract.connect(signer)
     },
     setWalletAddress({ commit }, address) {
       commit('SET_WALLET_ADDRESS', address)
     },
-    connectWC({ commit, state }) {
-      wcConnector.createSession()
-    }
   },
   getters: { 
     walletAddress(state) {

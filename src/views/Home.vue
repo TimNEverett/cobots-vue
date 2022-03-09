@@ -58,6 +58,8 @@ export default {
   },
   methods: {
     ...mapActions('eth', ['setWalletAddress']),
+    ...mapActions('mint', ['getIsMintedOut']),
+    ...mapActions('bots', ['getMyBots']),
     accountsChanged(accounts) {
       console.log('changed', accounts)
       let address = accounts.length > 0 ? accounts[0] : ""
@@ -87,6 +89,8 @@ export default {
       window.ethereum.on('disconnect', this.disconnected);
     }
     this.connected()
+    this.getIsMintedOut()
+    this.getMyBots()
   },
   beforeUnmount() {
     if(window.ethereum != 'undefined'){

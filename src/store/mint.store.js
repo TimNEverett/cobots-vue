@@ -1,11 +1,14 @@
+import { contract } from '../services/contract.service'
+
 export default {
   namespaced: true,
   state: () => ({ 
     mintPhaseComplete: true,
-    numMinted: 10000,
+    numMinted: 0,
     mintPrice: 0.05,
     mintLimit: 10000,
-    mintEndDate: Date.now() + (1000 * 60 * 60 * 24 * 0.5)
+    mintEndDate: Date.now() + (1000 * 60 * 60 * 24 * 0.5),
+    maxMintPerAddress: 20,
   }),
   mutations: { 
     SET_MINT_PHASE_COMPELTE(state, isComplete) {
@@ -22,10 +25,19 @@ export default {
     },
     SET_MINT_END_DATE(state, date) {
       state.mintEndDate = date
+    },
+    SET_MAX_MINT_PER_ADDRESS(state, max) {
+      state.maxMintPerAddress = max
     }
   },
   actions: { 
-
+    async getIsMintedOut({ commit }) {
+      const result = await contract.isMintedOut()
+      commit('SET_MINT_PHASE_COMPELTE', result)
+    },
+    async mint({ commit }, numToMint) {
+      contract.mintPublicSale(numToMint)
+    }
   },
   getters: { 
     mintPhaseComplete(state) {

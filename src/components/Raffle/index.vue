@@ -7,13 +7,14 @@
       1 winner will be drawn every minute until all are drawn. Prizes will be sent to the winners by the smart contract as soon as they are drawn. Thanks for playing!
     </div>
     <main-prizes class="mb-20"/>
-    <div class="w-full border-b-2 border-cobots-silver"></div>
-    <bonus-prizes class="mt-20"/>
+    <div v-if="bonusPrizesUnlocked" class="w-full border-b-2 border-cobots-silver"></div>
+    <bonus-prizes v-if="bonusPrizesUnlocked" class="mt-20"/>
     
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import BonusPrizes from './BonusPrizes.vue'
 import MainPrizes from './MainPrizes.vue'
 export default {
@@ -21,6 +22,9 @@ export default {
   components: { 
     MainPrizes,
     BonusPrizes 
+  },
+  computed: {
+    ...mapGetters('prizes', ['bonusPrizesUnlocked'])
   }
   
 }

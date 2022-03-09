@@ -20,7 +20,7 @@
       </counter-button>
 
     </div>
-    <cb-button @click="mint" :disabled="minting || mintedLimit">{{ mintBtnText }}</cb-button>
+    <cb-button @click="localMint" :disabled="minting || mintedLimit">{{ mintBtnText }}</cb-button>
     <scroll-label v-if="mintComplete" class="text-cobots-green">
       mint comlete! it may take a <br />minute to show up in your wallet
     </scroll-label>
@@ -34,7 +34,7 @@
 import cbButton from "./shared/cbButton.vue"
 import scrollLabel from "./shared/scrollLabel.vue"
 import counterButton from "./counterButton.vue"
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
    name: 'MintPanel',
    components: {
@@ -72,6 +72,7 @@ export default {
       }
    },
    methods:{
+     ...mapActions('mint', ['mint']),
      increment() {
        if(!this.atMax) {
          this.numToMint += 1
@@ -82,7 +83,8 @@ export default {
          this.numToMint -= 1
        }
      },
-     mint() {
+     localMint() {
+       this.mint(this.numToMint)
        this.numToMint = 1
        this.numMinted += this.numToMint
      }

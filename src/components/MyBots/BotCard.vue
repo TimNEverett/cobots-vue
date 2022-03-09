@@ -1,7 +1,8 @@
 <template>
   <div class="bg-black border-2 p-2 border-cobots-silver rounded-2xl space-y-2">
     <div class=" bg-white text-black rounded-lg w-52 h-52 flex justify-center items-center">
-      <div>{{imgUrl}}</div>
+
+      <img v-if="tokenURI" :src="tokenURI" />
     </div>
 
     <button 
@@ -24,22 +25,38 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import TwitterLogo from "../TwitterLogo.vue"
 export default {
-   name: 'BotCard',
-   components: {
-     TwitterLogo
-   },
-   props: {
-     imgUrl: String,
-     currentColor: String,
-     showMintButton: Boolean,
-   },
-   computed: {
-     flipButtonText() {
-       if(this.currentColor === 'red') return 'Flip to blue'
-       return 'Flip to red'
-     }
-   }
+  name: 'BotCard',
+  data() {
+    return {
+      imgUrl: null,
+      showMintButton: false,
+      currentColor: 'blue'
+    }
+  },
+  components: {
+    TwitterLogo
+  },
+  props: {
+    index: Number,
+  },
+  computed: {
+    ...mapGetters('bots', ['imageByIndex']),
+    tokenURI() {
+      return this.imageByIndex(this.index)
+    },
+    flipButtonText() {
+      if(this.currentColor === 'red') return 'Flip to blue'
+      return 'Flip to red'
+    },
+  },
+  methods: {
+    ...mapActions('bots', ['getImageForIndex'])
+  },
+  mounted() {
+    this.getImageForIndex(this.index)
+  }
 }
 </script>

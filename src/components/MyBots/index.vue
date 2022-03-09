@@ -3,11 +3,9 @@
     <div class="uppercase text-5xl text-white font-black mb-8">my bots</div>
     <div class="flex justify-center flex-wrap px-32 gap-4">
       <bot-card 
-        v-for="b in allBots" 
-        :key="b.id" 
-        :imgUrl="b.svgUrl" 
-        :showMintButton="mintPhaseComplete"
-        :currentColor="b.color"
+        v-for="b in myBots" 
+        :key="b"
+        :index="b"
       />
     </div>
   </div>
@@ -22,8 +20,8 @@ export default {
     BotCard,
   },
   computed: {
-    ...mapGetters('bots', ['allBots']),
-    ...mapGetters('mint', ['mintPhaseComplete'])
+    ...mapGetters('bots', ['myBots']),
+    ...mapGetters('mint', ['mintPhaseComplete']),
   }
 }
 </script>
