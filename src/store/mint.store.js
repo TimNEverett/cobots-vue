@@ -54,7 +54,7 @@ export default {
       if(saleOpen) {
         const saleStartTimestamp = await contract.publicSaleStartTimestamp()
         const mintDuration = await contract.COBOTS_MINT_DURATION()
-        const endDate = saleStartTimestamp.toNumber() + (1000 * mintDuration.toNumber())
+        const endDate = (saleStartTimestamp.toNumber() + mintDuration.toNumber())* 1000
         commit('SET_MINT_END_DATE', endDate)
       }
     },
@@ -82,7 +82,7 @@ export default {
   },
   getters: { 
     mintPhaseComplete(state) {
-      return state.mintPhaseComplete || true
+      return state.mintPhaseComplete
     },
     mintPrice(state) {
       return state.mintPrice

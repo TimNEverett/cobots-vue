@@ -45,7 +45,6 @@ export default {
     },
     async getBotColor({ commit }, index) {
       const isBlue = await contract.coBotsColors(index)
-      console.log({ index, isBlue })
       commit('SET_BOT_COLORS', { index, color: isBlue ? 'blue' : 'red' })
     },
     async toggleBotColor({ commit, state, dispatch }, index) {

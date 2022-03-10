@@ -15,8 +15,6 @@ export var provider = new ethers.getDefaultProvider('rinkeby', {
 
 export var contract = new ethers.Contract(VITE_CONTRACT_ADDRESS, abi, provider);
 
-console.log(contract)
-
 const setSigner = () => {
   let provider = new ethers.providers.Web3Provider(window.ethereum)
   const signer = provider.getSigner()
