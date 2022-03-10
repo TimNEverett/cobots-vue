@@ -10,19 +10,19 @@
 
 <script>
 export default {
-   name: 'cbButton',
-   emits: ['click'],
-   props: {
-     click: Function,
-     disabled: {
-       type: Boolean,
-       default: false
-     }
-   },
-   methods:{
-     localClick() {
-       this.$emit('click')
-     }
-   }
+  name: 'cbButton',
+  emits: ['click'],
+  props: {
+    click: Function,
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods:{
+    localClick() {
+      if(!this.disabled) this.$emit('click')
+    }
+  }
 }
 </script>

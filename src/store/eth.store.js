@@ -1,36 +1,21 @@
-import {
-  connectMetaMask,
-  wcConnector
-} from '../services/wallet.service'
 export default {
   namespaced: true,
   state: () => ({ 
     walletAddress: "",
-    mintPhaseComplete: true,
-    rafflePhaseComplete: false,
+    readyToRaffle: true,
   }),
   mutations: { 
     SET_WALLET_ADDRESS(state, address) {
       state.walletAddress = address
     },
-    SET_RAFFLE_PHASE_COMPELTE(state, isComplete) {
-      state.rafflePhaseComplete = isComplete
+    SET_READY_TO_RAFFLE(state, isReady) {
+      state.readyToRaffle = isReady
     },
   },
   actions: { 
-    async connectMetaMask({ commit, state }) {
-      if(state.walletAddress) return
-
-      let address = await connectMetaMask()
-      
+    setWalletAddress({ commit, dispatch }, address) {
       commit('SET_WALLET_ADDRESS', address)
     },
-    setWalletAddress({ commit }, address) {
-      commit('SET_WALLET_ADDRESS', address)
-    },
-    connectWC({ commit, state }) {
-      wcConnector.createSession()
-    }
   },
   getters: { 
     walletAddress(state) {
@@ -39,8 +24,8 @@ export default {
     walletConnected(state) {
       return state.walletAddress.length > 0
     },
-    rafflePhaseComplete(state) {
-      return state.rafflePhaseComplete
+    readyToRaffle(state) {
+      return state.readyToRaffle
     }
   }
 }

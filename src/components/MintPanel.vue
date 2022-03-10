@@ -3,7 +3,7 @@
     <div class="flex items-center space-x-4">
       
       <counter-button
-        :disabled="atMin || minting"
+        :disabled="atMin || mintInProgress"
         @click="decrement">
         -
       </counter-button>
@@ -14,14 +14,21 @@
       </div>
 
       <counter-button 
-        :disabled="atMax || minting"
+        :disabled="atMax || mintInProgress"
         @click="increment">
         +
       </counter-button>
 
     </div>
-    <cb-button @click="mint" :disabled="minting || mintedLimit">{{ mintBtnText }}</cb-button>
-    <scroll-label v-if="mintComplete" class="text-cobots-green">
+
+    <cb-button 
+      @click="localMint" 
+      :disabled="mintInProgress || mintedLimit || !publicSaleOpen"
+    >
+      {{ mintBtnText }}
+    </cb-button>
+
+    <scroll-label v-if="mintSuccessful" class="text-cobots-green">
       mint comlete! it may take a <br />minute to show up in your wallet
     </scroll-label>
     <scroll-label v-else class="text-cobots-silver-2" >
@@ -34,7 +41,7 @@
 import cbButton from "./shared/cbButton.vue"
 import scrollLabel from "./shared/scrollLabel.vue"
 import counterButton from "./counterButton.vue"
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
    name: 'MintPanel',
    components: {
@@ -45,17 +52,21 @@ export default {
    data() {
      return {
        numToMint: 1,
-       numMinted: 0,
        max: 20,
-       minting: false,
-       mintComplete: true
      }
    },
    computed: {
-      ...mapGetters(['mint/numMinted', 'mint/mintLimit']),
-      totalMinted: function () { return this['mint/numMinted'] },
+      ...mapGetters('mint', [
+        'mintLimit', 
+        'mintInProgress', 
+        'mintSuccessful',
+        'publicSaleOpen',
+      ]),
+      ...mapGetters('bots', ['numMinted']),
       atMax: function() { 
-        return this.numToMint + this.numMinted >= this.max || this.numToMint + this.totalMinted >= this["mint/mintLimit"] 
+        if(this.numToMint + this.numMinted >= this.max) return true
+        if(this.numToMint + this.numMinted >= this.mintLimit) return true
+        return false
       },
       atMin: function() { return this.numToMint <= 1 },
       mintedLimit: function() { return this.numMinted >= this.max },
@@ -67,24 +78,25 @@ export default {
       },
       mintBtnText() {
         if(this.mintedLimit) return 'You hit your limit'
-        else if(this.minting) return 'Minting...'
+        else if(this.mintInProgress) return 'Minting...'
         return 'Mint'
       }
    },
+   watch: {
+     mintSuccessful() {
+       if(this.mintSuccessful) this.numToMint = 1
+     }
+   },
    methods:{
+     ...mapActions('mint', ['mint']),
      increment() {
-       if(!this.atMax) {
-         this.numToMint += 1
-       }
+       if(!this.atMax) this.numToMint += 1
      },
      decrement() {
-       if(!this.atMin) {
-         this.numToMint -= 1
-       }
+       if(!this.atMin) this.numToMint -= 1
      },
-     mint() {
-       this.numToMint = 1
-       this.numMinted += this.numToMint
+     async localMint() {
+       await this.mint(this.numToMint)
      }
    }
 }

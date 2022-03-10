@@ -1,45 +1,99 @@
+import { contract } from "../services/contract.service"
+
 export default {
   namespaced: true,
   state: () => ({ 
-    bots: [
-      {
-        id: 1,
-        svgUrl: '1',
-        color: 'red'
-      },
-      {
-        id: 2,
-        svgUrl: '2',
-        color: 'blue'
-      },
-      {
-        id: 3,
-        svgUrl: '3',
-        color: 'red'
-      },
-      {
-        id: 4,
-        svgUrl: '4',
-        color: 'red'
-      },
-    ],
+    myBots: [],
+    botImages: {},
+    botColors: {},
+    numMinted: 0,
   }),
   mutations: { 
-    SET_BOTS(state, bots) {
-      state.bots = bots
+    SET_MY_BOTS(state, bots) {
+      state.myBots = bots
     },
+    SET_BOT_IMAGES_BY_INDEX(state, { image, index }) {
+      state.botImages[index] = image
+    },
+    SET_NUM_MINTED(state, num) {
+      state.numMinted = num
+    },
+    SET_BOT_COLORS(state, { color, index }) {
+      state.botColors[index] = color
+    } 
   },
   actions: { 
-    async getBots({ commit, state }) {
-      //placeholder
+    async getMyBots({ commit, state }, address) {
+      if(!address) return 
+      const num = await contract.balanceOf(address)
+      let numMinted = num.toNumber()
+      commit('SET_NUM_MINTED', numMinted)
+
+      let arr = [...Array(num.toNumber()).keys()]
+
+      const bots = await Promise.all(arr.map(async i => {
+        let ind = await contract.tokenOfOwnerByIndex(address, i)
+        return ind.toNumber()
+      }))
+
+      commit('SET_MY_BOTS', bots)
     },
+    async getImageForIndex({ commit }, index) {
+      const tokenURI = await contract.tokenURI(index)
+      const {image_data} = JSON.parse(tokenURI.split('data:application/json,')[1])
+      commit('SET_BOT_IMAGES_BY_INDEX', { image: image_data, index })
+    },
+    async getBotColor({ commit }, index) {
+      const isBlue = await contract.coBotsColors(index)
+      commit('SET_BOT_COLORS', { index, color: isBlue ? 'blue' : 'red' })
+    },
+    async toggleBotColor({ commit, state, dispatch }, index) {
+      try {
+        let transaction = await contract.toggleColor(index)
+        await transaction.wait()
+        let curColor = state.botColors[index]
+        commit('SET_BOT_COLORS', { index, color: curColor == 'red' ? 'blue' : 'red'})
+        dispatch('getImageForIndex', index)
+      } catch(e) {
+        console.log(e.message)
+      }
+    },
+    async flipAllColors({ commit, state, dispatch }, color) {
+      if(color !== 'red' && color !== 'blue') return
+      try {
+        const tokensToFlip = state.myBots.filter(i => state.botColors[i] != color)
+        let transaction = await contract.toggleColors(tokensToFlip)
+        await transaction.wait()
+        tokensToFlip.forEach(index => {
+          commit('SET_BOT_COLORS', { index, color })
+          dispatch('getImageForIndex', index)
+        })
+      } catch(e) {
+        console.log(e.message)
+      }
+    }
   },
   getters: { 
-    allBots(state) {
-      return state.bots
+    myBots(state) {
+      return state.myBots
     },
     hasBots(state) {
-      return state.bots.length > 0
+      return state.myBots.length > 0
+    },
+    imageByIndex:(state) => (idx) => {
+      return state.botImages[idx] || null
+    },
+    colorByIndex:(state) => (idx) => {
+      return state.botColors[idx] || null
+    },
+    numMinted(state) {
+      return state.numMinted
+    },
+    allRed(state) {
+      return state.myBots.every(i => state.botColors[i] == 'red')
+    },
+    allBlue(state) {
+      return state.myBots.every(i => state.botColors[i] == 'blue')
     }
   }
 }

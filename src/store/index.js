@@ -3,13 +3,15 @@ import eth from './eth.store'
 import bots from './bots.store'
 import mint from './mint.store'
 import bonus from './bonus.store'
+import prizes from './prizes.store'
 
 const store = createStore({
   modules: {
     eth,
     bots,
     mint,
-    bonus
+    bonus,
+    prizes
   }
 })
 

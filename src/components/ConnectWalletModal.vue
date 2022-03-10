@@ -31,10 +31,14 @@
 <script>
 import { mapActions } from "vuex"
 export default {
-   name: 'ConnectWalletModal',
-   emits: ['close'],
-   methods: {
-     ...mapActions('eth', ['connectMetaMask', 'connectWC']),
-   }
+    name: 'ConnectWalletModal',
+    emits: ['close'],
+    methods: {
+      ...mapActions('eth', ['setWalletAddress']),
+      async connectMetaMask() {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        this.setWalletAddress(accounts[0])
+      }
+    }
 }
 </script>
