@@ -5,9 +5,10 @@
     </div>
 
     <button 
-      v-if="showMintButton"
+      v-if="mintPhaseComplete && botColor"
       class="w-full py-3 rounded-lg uppercase font-black text-sm"
-      :class="{'bg-cobots-red': currentColor === 'blue', 'bg-sky-400': currentColor === 'red', }"
+      :class="{'bg-cobots-red': botColor === 'blue', 'bg-sky-400': botColor === 'red', }"
+      @click="toggleBotColor(index)"
     >
       {{flipButtonText}}
     </button>
@@ -31,8 +32,6 @@ export default {
   data() {
     return {
       imgUrl: null,
-      showMintButton: false,
-      currentColor: 'blue'
     }
   },
   components: {
@@ -42,20 +41,29 @@ export default {
     index: Number,
   },
   computed: {
-    ...mapGetters('bots', ['imageByIndex']),
+    ...mapGetters('bots', ['imageByIndex', 'colorByIndex']),
+    ...mapGetters('mint', ['mintPhaseComplete']),
     tokenURI() {
       return this.imageByIndex(this.index)
     },
+    botColor() {
+      return this.colorByIndex(this.index)
+    },
     flipButtonText() {
-      if(this.currentColor === 'red') return 'Flip to blue'
+      if(this.botColor === 'red') return 'Flip to blue'
       return 'Flip to red'
     },
   },
   methods: {
-    ...mapActions('bots', ['getImageForIndex'])
+    ...mapActions('bots', [
+      'getImageForIndex', 
+      'getBotColor', 
+      'toggleBotColor'
+    ])
   },
   mounted() {
     this.getImageForIndex(this.index)
+    this.getBotColor(this.index)
   }
 }
 </script>

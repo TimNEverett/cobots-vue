@@ -5,6 +5,7 @@ export default {
   state: () => ({ 
     myBots: [],
     botImages: {},
+    botColors: {},
     numMinted: 0,
   }),
   mutations: { 
@@ -16,14 +17,15 @@ export default {
     },
     SET_NUM_MINTED(state, num) {
       state.numMinted = num
-    }
+    },
+    SET_BOT_COLORS(state, { color, index }) {
+      state.botColors[index] = color
+    } 
   },
   actions: { 
     async getMyBots({ commit, state }, address) {
-      console.log(address)
       if(!address) return 
       const num = await contract.balanceOf(address)
-      console.log(num)
       let numMinted = num.toNumber()
       commit('SET_NUM_MINTED', numMinted)
 
@@ -40,6 +42,36 @@ export default {
       const tokenURI = await contract.tokenURI(index)
       const {image_data} = JSON.parse(tokenURI.split('data:application/json,')[1])
       commit('SET_BOT_IMAGES_BY_INDEX', { image: image_data, index })
+    },
+    async getBotColor({ commit }, index) {
+      const isBlue = await contract.coBotsColors(index)
+      console.log({ index, isBlue })
+      commit('SET_BOT_COLORS', { index, color: isBlue ? 'blue' : 'red' })
+    },
+    async toggleBotColor({ commit, state, dispatch }, index) {
+      try {
+        let transaction = await contract.toggleColor(index)
+        await transaction.wait()
+        let curColor = state.botColors[index]
+        commit('SET_BOT_COLORS', { index, color: curColor == 'red' ? 'blue' : 'red'})
+        dispatch('getImageForIndex', index)
+      } catch(e) {
+        console.log(e.message)
+      }
+    },
+    async flipAllColors({ commit, state, dispatch }, color) {
+      if(color !== 'red' && color !== 'blue') return
+      try {
+        const tokensToFlip = state.myBots.filter(i => state.botColors[i] != color)
+        let transaction = await contract.toggleColors(tokensToFlip)
+        await transaction.wait()
+        tokensToFlip.forEach(index => {
+          commit('SET_BOT_COLORS', { index, color })
+          dispatch('getImageForIndex', index)
+        })
+      } catch(e) {
+        console.log(e.message)
+      }
     }
   },
   getters: { 
@@ -52,8 +84,17 @@ export default {
     imageByIndex:(state) => (idx) => {
       return state.botImages[idx] || null
     },
+    colorByIndex:(state) => (idx) => {
+      return state.botColors[idx] || null
+    },
     numMinted(state) {
       return state.numMinted
+    },
+    allRed(state) {
+      return state.myBots.every(i => state.botColors[i] == 'red')
+    },
+    allBlue(state) {
+      return state.myBots.every(i => state.botColors[i] == 'blue')
     }
   }
 }

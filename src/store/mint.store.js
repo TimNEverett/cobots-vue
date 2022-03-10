@@ -82,7 +82,7 @@ export default {
   },
   getters: { 
     mintPhaseComplete(state) {
-      return state.mintPhaseComplete
+      return state.mintPhaseComplete || true
     },
     mintPrice(state) {
       return state.mintPrice
