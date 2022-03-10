@@ -13,7 +13,7 @@ export default {
     },
   },
   actions: { 
-    setWalletAddress({ commit }, address) {
+    setWalletAddress({ commit, dispatch }, address) {
       commit('SET_WALLET_ADDRESS', address)
     },
   },

@@ -15,6 +15,8 @@ export var provider = new ethers.getDefaultProvider('rinkeby', {
 
 export var contract = new ethers.Contract(VITE_CONTRACT_ADDRESS, abi, provider);
 
+console.log(contract)
+
 const setSigner = () => {
   let provider = new ethers.providers.Web3Provider(window.ethereum)
   const signer = provider.getSigner()
@@ -30,6 +32,7 @@ const connected = async () => {
   const [ address ] = await window.ethereum.request({ method: 'eth_requestAccounts' });
   setSigner()
   store.dispatch('eth/setWalletAddress', address)
+  console.log(contract)
 }
 
 const disconnected = () => {

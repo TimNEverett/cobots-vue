@@ -51,6 +51,7 @@ export default {
   computed: {
     ...mapGetters('eth', [
       'walletConnected',
+      'walletAddress',
       'readyToRaffle',
     ]),
     ...mapGetters('mint', ['mintPhaseComplete']),
@@ -58,7 +59,7 @@ export default {
   },
   methods: {
     ...mapActions('eth', ['setWalletAddress']),
-    ...mapActions('mint', ['getIsMintedOut']),
+    ...mapActions('mint', ['mintState']),
     ...mapActions('bots', ['getMyBots']),
     scrollToBonusPrizes() {
       const el = this.$refs['info-section'].$refs['bonus-prizes-info'].$el
@@ -69,9 +70,13 @@ export default {
       this.$scrollTo(el, 600, { offset: 20 })
     }
   },
+  watch: {
+    walletAddress() {
+      this.getMyBots(this.walletAddress)
+    }
+  },
   mounted() {
-    this.getIsMintedOut()
-    this.getMyBots()
+    this.mintState()
   }
 }
 </script>

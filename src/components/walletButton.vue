@@ -9,7 +9,7 @@
     <button 
       class="uppercase underline font-black text-sky-400"
       v-if="hasBots"
-      @click="$emit('view-bots')"
+      @click="viewBots"
     >
       View my bots
     </button>
@@ -32,6 +32,11 @@ export default {
    },
    methods: {
      ...mapActions('eth', ['setWalletAddress']),
+     ...mapActions('bots', ['getMyBots']),
+     viewBots() {
+       this.$emit('view-bots')
+       this.getMyBots(this.walletAddress)
+     },
      logout() {
        this.setWalletAddress('')
      }

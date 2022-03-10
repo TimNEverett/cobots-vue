@@ -11,7 +11,7 @@
       <div class="hidden lg:flex items-center px-2 ">
         <p class="text-cobots-silver-2 mr-1">MINTED:</p>
         <p class="text-white font-extrabold">
-          {{ numMinted.toLocaleString('en-US') }}/{{mintLimit.toLocaleString('en-US')}}
+          {{ totalSupply.toLocaleString('en-US') }}/{{mintLimit.toLocaleString('en-US')}}
           </p>
       </div>
       <div v-if="!mintPhaseComplete" class="flex items-center px-2">
@@ -52,7 +52,7 @@ export default {
    },
    computed: {
       ...mapGetters('mint', [
-        'numMinted',
+        'totalSupply',
         'mintPrice',
         'mintLimit',
         'mintPhaseComplete',
