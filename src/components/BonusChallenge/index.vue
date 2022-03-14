@@ -1,5 +1,8 @@
 <template>
-  <div class="flex flex-col items-center text-center px-4">
+  <div 
+    class="flex flex-col items-center text-center px-4 pt-4"
+    :style="{height: 'calc(100vh - ' + headerHeight + 'px)'}"
+  >
     <div class="font-black  w-full text-4xl sm:text-5xl uppercase mb-4">
       BONUS <br/> CHALLENGE
     </div>
@@ -12,13 +15,13 @@
 
     <div class="space-y-2 sm:w-[640px]">
       <ProgressBar 
-        :total="bonusPrizeLimit" 
+        :total="coordinationThreshold" 
         :progress="numBlue" 
         color="blue" 
         bg-color="bg-sky-400"
       />
       <ProgressBar 
-        :total="bonusPrizeLimit" 
+        :total="coordinationThreshold" 
         :progress="numRed" 
         color="red" 
         bg-color="bg-cobots-red"
@@ -32,19 +35,27 @@
 
 <script>
 import ProgressBar from "@/components/BonusChallenge/ProgressBar.vue"
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
-   name: 'BonusChallengePanel',
-   emits: ['more-details-click'],
-   components: {
-     ProgressBar,
-   },
-   computed: {
-     ...mapGetters('bonus', [
-       'numRed',
-       'numBlue',
-       'bonusPrizeLimit'
-     ])
-   }
+  name: 'BonusChallengePanel',
+  emits: ['more-details-click'],
+  components: {
+    ProgressBar,
+  },
+  computed: {
+    ...mapGetters('bonus', [
+      'numRed',
+      'numBlue',
+      'coordinationThreshold'
+    ]),
+    ...mapGetters('layout', ['headerHeight'])
+  },
+  methods: {
+    ...mapActions('bonus', ['getNumBlue', 'getBonusRaffleData'])
+  },
+  mounted() {
+    this.getBonusRaffleData()
+    this.getNumBlue()
+  }
 }
 </script>

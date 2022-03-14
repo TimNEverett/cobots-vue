@@ -1,30 +1,46 @@
+import { contract } from "@/services/contract.service"
 export default {
   namespaced: true,
   state: () => ({ 
-    numRed: 2460,
-    numBlue: 6540,
-    bonusPrizeLimit: 9500
+    numBlue: null,
+    coordinationThreshold: null,
+    maxSupply: null,
   }),
   mutations: { 
-    SET_NUM_RED(state, num) {
-      state.numRed = num
-    },
     SET_NUM_BLUE(state, num) {
       state.numBlue = num
+    },
+    SET_COORDINATION_THRESHOLD(state, threshold) {
+      state.coordinationThreshold = threshold
+    },
+    SET_MAX_SUPPLY(state, supply) {
+      state.maxSupply = supply
     }
   },
   actions: { 
+    async getBonusRaffleData({ commit }) {
+      let coordinationThreshold = await contract.COORDINATION_RAFFLE_THRESHOLD()
+      commit('SET_COORDINATION_THRESHOLD', coordinationThreshold)
 
+      let maxSupply = await contract.MAX_COBOTS()
+      commit('SET_MAX_SUPPLY', maxSupply.toNumber())
+    },
+    async getNumBlue({ commit }) {
+      let numBlue = await contract.coBotsColorAgreement()
+      commit('SET_NUM_BLUE', numBlue)
+    }
   },
   getters: { 
     numRed(state) {
-      return state.numRed
+      if(state.numBlue === null || state.maxSupply === null) return 0
+      return state.maxSupply - state.numBlue
     },
     numBlue(state) {
+      if(state.numBlue === null || state.maxSupply === null) return 0
       return state.numBlue
     },
-    bonusPrizeLimit(state) {
-      return state.bonusPrizeLimit
-    }
+    coordinationThreshold(state) {
+      return state.coordinationThreshold
+    },
   }
 }

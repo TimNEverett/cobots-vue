@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import HeaderVue from "@/components/Header.vue"
+import HeaderVue from "@/components/Header/index.vue"
 import Home from "./views/Home.vue"
 export default {
    name: 'App',
