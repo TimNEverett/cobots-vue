@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <div class="flex justify-between">
-      <div class="font-black text-xl">MAIN PRIZES (25 ETH)</div>
-      <div class="font-black text-xl text-cobots-silver-2">
-        {{numPrizesDrawn}}/10 DRAWN
+  <div class="flex flex-col items-center">
+    <div class="flex justify-between text-sm sm:text-xl w-full">
+      <div class="font-black ">MAIN PRIZES (25 ETH)</div>
+      <div class="font-black text-cobots-silver-2">
+        {{ mainDrawCount }}/{{ mainWinnersCount }} DRAWN
       </div>
     </div>
 
-    <div class="grid grid-cols-5 gap-2">
+    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2">
       <winner-card v-for="i in 10" :key="i"/>
     </div>
   </div>
@@ -20,7 +20,7 @@ export default {
   components: { WinnerCard },
    name: 'MainPrizes',
    computed: {
-     ...mapGetters('prizes', ['numPrizesDrawn'])
+     ...mapGetters('prizes', ['mainDrawCount', 'mainWinnersCount'])
    }
 }
 </script>

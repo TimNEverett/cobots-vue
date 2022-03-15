@@ -1,7 +1,10 @@
 <template>
   <div class="overflow-hidden overscroll-none">
-    <div class="flex flex-col justify-center items-center">
-      <div v-if="walletConnected" class="absolute sm:right-4 top-20 sm:top-24">
+    <div 
+      class="flex flex-col justify-center items-center"
+      :style="{height: heightStyle}"
+    >
+      <div v-if="walletConnected" class="mt-4 absolute sm:right-4 top-20 sm:top-24">
         <wallet-button @viewBots="scrollToMyBots"/>
       </div>
       <connect-wallet-panel  v-if="!walletConnected"/>
@@ -13,10 +16,8 @@
       <raffle v-else/>
       <img 
         src="../images/Bot-Illustration.svg" 
-        :class="{'absolute bottom-0': canMint || canFlip }"
       >
     </div>
-    
   </div>
   <div class="bg-black text-white flex flex-col items-center">
     <my-bots-section ref="my-bots" v-if="hasBots" />
@@ -33,6 +34,7 @@ import MintPanel from "@/components/MintPanel.vue"
 import BonusChallengePanel from "@/components/BonusChallenge/index.vue"
 import { mapGetters, mapActions } from "vuex";
 import Raffle from "@/components/Raffle/index.vue"
+import layoutStore from '@/store/layout.store'
 
 export default {
   name: 'Home',
@@ -55,12 +57,14 @@ export default {
       'readyToRaffle',
     ]),
     ...mapGetters('bots', ['hasBots']),
+    ...mapGetters('layout', ['headerHeight']),
     ...mapGetters('contractState', [
       'canMint',
       'canFlip'
     ]),
-    panelFullScreen() {
-      return !this.walletConnected || !this.mintPhaseComplete
+    heightStyle() {
+      if(this.canFlip || this.canMint) return `calc(100vh - ${this.headerHeight}px)`
+      return 'auto'
     }
   },
   methods: {

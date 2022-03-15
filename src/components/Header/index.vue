@@ -1,13 +1,13 @@
 <template>
 <div class="bg-black" @resize="resizeHandler">
-  <div class="flex py-2 pl-4 justify-between h-12 sm:hidden ">
+  <div class="flex py-2 pl-2 justify-between h-12 sm:hidden ">
     <Logo class=" fill-white"/>
     <social-media-buttons class="w-24"/>
   </div>
-  <div class="flex-row flex items-center justify-center sm:justify-between pl-2 md:pl-9 sm:py-4 w-full md:h-20">
+  <div class="flex-row flex items-center md:pl-9 sm:py-4 w-full pb-2">
     <Logo class="hidden sm:block fill-white"/>
 
-    <div class="flex-row flex items-center justify-between sm:justify-center text-sm sm:text-xl">
+    <div class="w-full flex-row flex items-center justify-between sm:justify-center text-xs sm:text-xl">
       <div 
         class="items-center px-2"
         :class="{'hidden lg:flex': canMint, 'flex': !canMint}"
@@ -53,7 +53,6 @@ export default {
       return ''
     },
     maxString() {
-      console.log('maxSupply', this.maxSupply)
       if(this.maxSupply) return this.maxSupply.toLocaleString('en-US')
       return ''
     }

@@ -1,7 +1,6 @@
 <template>
   <div 
-    class="flex flex-col items-center text-center px-4 pt-4"
-    :style="{height: 'calc(100vh - ' + headerHeight + 'px)'}"
+    class="flex flex-col items-center text-center px-4 pt-4 justify-center flex-grow"
   >
     <div class="font-black  w-full text-4xl sm:text-5xl uppercase mb-4">
       BONUS <br/> CHALLENGE

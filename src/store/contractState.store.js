@@ -40,7 +40,7 @@ export default {
       state.isDrawOpen = isOpen
     },
     SET_COOPERATIVE_RAFFLE_ENABLED(state, isEnabled) {
-      state.isEnabled = isEnabled
+      state.cooperativeRaffleEnabled = isEnabled
     }
   },
   actions: {
@@ -48,26 +48,23 @@ export default {
       commit('SET_NOW', now)
     },
     async getIsPublicSaleOpen({ commit }) {
-      let isOpen = await contract.isPublicSaleOpen() || true
+      let isOpen = await contract.isPublicSaleOpen()
       commit('SET_IS_PUBLIC_SALE_OPEN', isOpen)
       if(isOpen) {
         let startTimestamp = await contract.publicSaleStartTimestamp()
         commit('SET_PUBLIC_SALE_START_TIMESTAMP', startTimestamp.toNumber())
-        // commit('SET_PUBLIC_SALE_START_TIMESTAMP', Date.now())
         
         let mintDuration = await contract.COBOTS_MINT_DURATION()
         commit('SET_MINT_DURATION', mintDuration.toNumber() * 1000)
       }
     },
     async getIsMintedOut({ commit }) {
-      let isMintedOut = await contract.isMintedOut() || true
-      console.log({ isMintedOut })
+      let isMintedOut = await contract.isMintedOut()
       commit('SET_IS_MINTED_OUT', isMintedOut)
       if(isMintedOut) {
         let mintedOutTimestamp = await contract.mintedOutTimestamp()
 
-        // commit('SET_MINTED_OUT_TIMESTAMP', mintedOutTimestamp.toNumber())
-        commit('SET_MINTED_OUT_TIMESTAMP', Date.now())
+        commit('SET_MINTED_OUT_TIMESTAMP', mintedOutTimestamp.toNumber())
 
         let mintRaffleDelay = await contract.COBOTS_MINT_RAFFLE_DELAY()
         commit('SET_MINT_RAFFLE_DELAY', mintRaffleDelay.toNumber() * 1000)
@@ -99,7 +96,7 @@ export default {
     canFlip(state, getters) {
       if(getters.canMint) return false
       let endDate = state.mintedOutTimestamp + state.mintRaffleDelay
-      return state.isMintedOut && state.now < endDate || true
+      return state.isMintedOut && state.now < endDate
     },
     cooperativeRaffleEnabled(state) {
       return state.cooperativeRaffleEnabled

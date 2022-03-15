@@ -1,31 +1,62 @@
+import { contract } from "@/services/contract.service"
 export default {
   namespaced: true,
   state: () => ({ 
-    prizesDrawn: [],
-    bonusPrizesDrawn: [],
+    drawCount: 0,
+    winners: [],
+    mainWinnersCount: 0,
+    bonusWinnersCount: 0,
   }),
   mutations: { 
-    ADD_PRIZE_TO_PRIZES_DRAWN(state, prize) {
-      state.prizesDrawn = [...state.prizesDrawn, prize]
+    SET_DRAW_COUNT(state, count) {
+      state.drawCount = count
     },
-    ADD_PRIZE_TO_BONUS_PRIZES_DRAWN(state, prize) {
-      state.bonusPrizesDrawn = [...state.bonusPrizesDrawn, prize]
+    SET_WINNERS(state, winners) {
+      state.winners = winners
     },
+    SET_MAIN_WINNERS_COUNT(state, count) {
+      state.mainWinnersCount = count
+    },
+    SET_BONUS_WINNERS_COUNT(state, count) {
+      state.bonusWinnersCount = count
+    }
   },
   actions: { 
+    async getRaffleInfo({ commit }) {
+      let count = await contract.MAIN_RAFFLE_WINNERS_COUNT()
+      commit('SET_MAIN_WINNERS_COUNT', count)
+
+      let bonusCount = await contract.COORDINATION_RAFFLE_WINNERS_COUNT()
+      commit('SET_BONUS_WINNERS_COUNT', bonusCount)
+    },
+    async getDrawCount({ commit }) {
+      let drawCount = await contract.drawCount()
+      commit('SET_DRAW_COUNT', drawCount)
+    },
+    async getWinners({ commit, state }) {
+      var winners = []
+      for(let i=0; i < state.drawCount; i++) {
+        let w = await contract.winners(i)
+        winners.push(w.toNumber())
+      }
+    }
   },
   getters: { 
-    prizesDrawn(state) {
-      return state.prizesDrawn
+    drawCount(state) {
+      return state.drawCount
     },
-    numPrizesDrawn(state) {
-      return state.prizesDrawn.length
+    mainDrawCount(state) {
+      return state.drawCount < state.mainWinnersCount ? state.drawCount : state.mainWinnersCount
     },
-    bonusPrizesDrawn(state) {
-      return state.bonusPrizesDrawn
+    bonusDrawCount(state) {
+      let val = state.drawCount - state.mainWinnersCount
+      return val > 0 ? val : 0
     },
-    numBonusPrizesDrawn(state) {
-      return state.bonusPrizesDrawn.length
+    mainWinnersCount(state) {
+      return state.mainWinnersCount
+    },
+    bonusWinnersCount(state) {
+      return state.bonusWinnersCount
     }
   }
 }

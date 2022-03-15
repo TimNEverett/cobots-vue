@@ -1,6 +1,5 @@
 <template>
-  <div class="flex flex-col items-center" 
-    :style="{height: 'calc(100vh - ' + headerHeight + 'px)'}"
+  <div class="flex flex-col items-center justify-center flex-grow" 
   >
     <div class="flex items-center space-x-4">
       

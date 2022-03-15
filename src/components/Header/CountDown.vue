@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center px-2">
-    <p class="text-cobots-silver-2 font mr-1">{{labelString}}:</p>
+    <p class="text-cobots-silver-2 mr-1">{{labelString}}:</p>
     <p 
       class="font-black text-white" 
       :class="{'text-cobots-red': textRed}"

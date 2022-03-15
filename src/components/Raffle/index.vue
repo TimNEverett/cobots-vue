@@ -1,5 +1,5 @@
 <template>
-  <div class="py-20 text-center flex flex-col items-center">
+  <div class="pt-32 px-6 sm:pt-10 text-center flex flex-col items-center">
     <div class="uppercase font-black text-6xl text-cobots-green mb-10">
       winners
     </div>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import BonusPrizes from './BonusPrizes.vue'
 import MainPrizes from './MainPrizes.vue'
 export default {
@@ -23,9 +23,33 @@ export default {
     MainPrizes,
     BonusPrizes 
   },
+  data: () => ({
+    interval: null,
+  }),
   computed: {
-    ...mapGetters('contractState', ['cooperativeRaffleEnabled'])
+    ...mapGetters('contractState', ['cooperativeRaffleEnabled']),
+    ...mapGetters('prizes', ['drawCount'])
+  },
+  methods: {
+    ...mapActions('contractState', ['getCooperativeRaffleEnabled']),
+    ...mapActions('prizes', ['getDrawCount', 'getRaffleInfo', 'getWinners'])
+  },
+  watch: {
+    drawCount() {
+      console.log('draw count changed', this.drawCount)
+      this.getWinners()
+    }
+  },
+  mounted() {
+    this.getCooperativeRaffleEnabled()
+    this.getRaffleInfo()
+    this.getDrawCount()
+    this.interval = setInterval(() => {
+      this.getDrawCount()
+    }, 60000)
+  },
+  beforeUnmount() {
+    clearInterval(this.interval)
   }
-  
 }
 </script>
