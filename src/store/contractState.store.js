@@ -52,7 +52,7 @@ export default {
       commit('SET_IS_PUBLIC_SALE_OPEN', isOpen)
       if(isOpen) {
         let startTimestamp = await contract.publicSaleStartTimestamp()
-        commit('SET_PUBLIC_SALE_START_TIMESTAMP', startTimestamp.toNumber())
+        commit('SET_PUBLIC_SALE_START_TIMESTAMP', startTimestamp.toNumber() * 1000)
         
         let mintDuration = await contract.COBOTS_MINT_DURATION()
         commit('SET_MINT_DURATION', mintDuration.toNumber() * 1000)
@@ -64,7 +64,7 @@ export default {
       if(isMintedOut) {
         let mintedOutTimestamp = await contract.mintedOutTimestamp()
 
-        commit('SET_MINTED_OUT_TIMESTAMP', mintedOutTimestamp.toNumber())
+        commit('SET_MINTED_OUT_TIMESTAMP', mintedOutTimestamp.toNumber() * 1000)
 
         let mintRaffleDelay = await contract.COBOTS_MINT_RAFFLE_DELAY()
         commit('SET_MINT_RAFFLE_DELAY', mintRaffleDelay.toNumber() * 1000)
