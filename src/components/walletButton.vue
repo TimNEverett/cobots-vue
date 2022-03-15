@@ -18,6 +18,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import { disconnect } from "@/services/contract.service"
+import { disconnectWC } from '@/services/wallectConnect.service';
 export default {
    name: 'walletButton',
    emits: ['view-bots'],
@@ -38,6 +40,8 @@ export default {
        this.getMyBots(this.walletAddress)
      },
      logout() {
+       if(window.ethereum) disconnect()
+       disconnectWC()
        this.setWalletAddress('')
      }
    }

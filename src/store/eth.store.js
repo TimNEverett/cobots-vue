@@ -2,14 +2,10 @@ export default {
   namespaced: true,
   state: () => ({ 
     walletAddress: "",
-    readyToRaffle: true,
   }),
   mutations: { 
     SET_WALLET_ADDRESS(state, address) {
       state.walletAddress = address
-    },
-    SET_READY_TO_RAFFLE(state, isReady) {
-      state.readyToRaffle = isReady
     },
   },
   actions: { 
@@ -24,8 +20,5 @@ export default {
     walletConnected(state) {
       return state.walletAddress.length > 0
     },
-    readyToRaffle(state) {
-      return state.readyToRaffle
-    }
   }
 }

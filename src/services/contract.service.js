@@ -15,31 +15,37 @@ export var provider = new ethers.getDefaultProvider('rinkeby', {
 
 export var contract = new ethers.Contract(VITE_CONTRACT_ADDRESS, abi, provider);
 
-const setSigner = () => {
-  let provider = new ethers.providers.Web3Provider(window.ethereum)
-  const signer = provider.getSigner()
+export const setSigner = (p) => {
+  const signer = p.getSigner()
   contract = contract.connect(signer)
 }
 
 const accountsChanged = (accounts) => {
   let address = accounts.length > 0 ? accounts[0] : ""
-  setSigner()
+  let p = new ethers.providers.Web3Provider(window.ethereum)
+  setSigner(p)
   store.dispatch('eth/setWalletAddress', address)
 }
 const connected = async () => {
   const [ address ] = await window.ethereum.request({ method: 'eth_requestAccounts' });
-  setSigner()
+  let p = new ethers.providers.Web3Provider(window.ethereum)
+  setSigner(p)
   store.dispatch('eth/setWalletAddress', address)
-  console.log(contract)
 }
 
 const disconnected = () => {
-  window.ethereum.
   store.dispatch('eth/setWalletAddress', '')
 }
 
-connected()
+export function connect() {
+  connected()
+  window.ethereum.on('accountsChanged', accountsChanged);
+  window.ethereum.on('connect', connected);
+  window.ethereum.on('disconnect', disconnected);
+}
 
-window.ethereum.on('accountsChanged', accountsChanged);
-window.ethereum.on('connect', connected);
-window.ethereum.on('disconnect', disconnected);
+export function disconnect() {
+  window.ethereum.removeListener('accountsChanged', accountsChanged);
+  window.ethereum.removeListener('connect', connected);
+  window.ethereum.removeListener('disconnect', disconnected);
+}
