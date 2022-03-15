@@ -4,6 +4,7 @@ export default {
   state: () => ({ 
     drawCount: 0,
     winners: [],
+    botsOfWinners: {},
     mainWinnersCount: 0,
     bonusWinnersCount: 0,
   }),
@@ -34,12 +35,13 @@ export default {
       commit('SET_DRAW_COUNT', drawCount)
     },
     async getWinners({ commit, state }) {
-      var winners = []
-      for(let i=0; i < state.drawCount; i++) {
-        let w = await contract.winners(i)
-        winners.push(w.toNumber())
-      }
-    }
+      let arr = [...Array(state.drawCount).keys()]
+      const winners = await Promise.all(arr.map(async i => {
+        let address = await contract.winners(i)
+        return address
+      }))
+      commit('SET_WINNERS', winners)
+    },
   },
   getters: { 
     drawCount(state) {

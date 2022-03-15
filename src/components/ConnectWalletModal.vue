@@ -3,8 +3,9 @@
     <div class="flex flex-col w-full h-full justify-center items-center">
       <div class="bg-white rounded-xl p-4 flex flex-col">
         <div class="uppercase font-black text-center mb-2 text-2xl">Connect wallet</div>
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-flow-col gap-2">
           <button 
+            v-if="hasMetaMask"
             class="border-2 border-zinc-300 rounded-md p-4 flex flex-col items-center"
             @click="connectMetaMask"
           >
@@ -15,7 +16,7 @@
           
           <button 
             class="border-2 border-zinc-300 rounded-md p-4 flex flex-col items-center"
-            @click.stop="connectWC"
+            @click.stop="connectWalletConnect"
           >
             <img class="w-40" src="../images/WalletConnectLogo.png" />
 
@@ -30,14 +31,24 @@
 
 <script>
 import { mapActions } from "vuex"
+import { connectWC } from "@/services/wallectConnect.service";
+import { connect } from "@/services/contract.service"
 export default {
     name: 'ConnectWalletModal',
     emits: ['close'],
+    computed: {
+      hasMetaMask() {
+        console.log(window)
+        return window.ethereum !== undefined
+      }
+    },
     methods: {
       ...mapActions('eth', ['setWalletAddress']),
       async connectMetaMask() {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        this.setWalletAddress(accounts[0])
+        connect()
+      },
+      async connectWalletConnect() {
+        connectWC()
       }
     }
 }

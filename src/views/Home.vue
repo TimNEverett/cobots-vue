@@ -63,7 +63,7 @@ export default {
       'canFlip'
     ]),
     heightStyle() {
-      if(this.canFlip || this.canMint) return `calc(100vh - ${this.headerHeight}px)`
+      if(this.canFlip || this.canMint || !this.walletConnected) return `calc(100vh - ${this.headerHeight}px)`
       return 'auto'
     }
   },
