@@ -48,13 +48,11 @@ export default {
       commit('SET_NOW', now)
     },
     async getIsPublicSaleOpen({ commit }) {
-      let isOpen = await contract.isPublicSaleOpen() || true
+      let isOpen = await contract.isPublicSaleOpen()
       commit('SET_IS_PUBLIC_SALE_OPEN', isOpen)
       if(isOpen) {
         let startTimestamp = await contract.publicSaleStartTimestamp()
         commit('SET_PUBLIC_SALE_START_TIMESTAMP', startTimestamp.toNumber())
-        commit('SET_PUBLIC_SALE_START_TIMESTAMP', Date.now())
-
         
         let mintDuration = await contract.COBOTS_MINT_DURATION()
         commit('SET_MINT_DURATION', mintDuration.toNumber() * 1000)
