@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col items-center">
+  <div class="flex flex-col items-center justify-center flex-grow" 
+  >
     <div class="flex items-center space-x-4">
       
       <counter-button
@@ -23,7 +24,7 @@
 
     <cb-button 
       @click="localMint" 
-      :disabled="mintInProgress || mintedLimit || !publicSaleOpen"
+      :disabled="mintInProgress || mintedLimit || !canMint"
     >
       {{ mintBtnText }}
     </cb-button>
@@ -60,8 +61,9 @@ export default {
         'mintLimit', 
         'mintInProgress', 
         'mintSuccessful',
-        'publicSaleOpen',
       ]),
+      ...mapGetters('layout', ['panelHeightClass', 'headerHeight']),
+      ...mapGetters('contractState', ['canMint']),
       ...mapGetters('bots', ['numMinted']),
       atMax: function() { 
         if(this.numToMint + this.numMinted >= this.max) return true

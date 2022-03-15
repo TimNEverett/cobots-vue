@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex-col justify-center items-center">
+  <div 
+    class="flex flex-col justify-center items-center flex-grow"
+  >
     <cb-button :disabled="connecting" @click="openModal"> {{buttonText}} </cb-button>
     <scroll-label>scroll down for info.</scroll-label>
   </div>
@@ -10,6 +12,7 @@
 import cbButton from "./shared/cbButton.vue"
 import scrollLabel from "./shared/scrollLabel.vue"
 import ConnectWalletModal from "./ConnectWalletModal.vue"
+import { mapGetters } from 'vuex'
 
 export default {
    name: 'ConnectWalletPanel',
@@ -28,7 +31,8 @@ export default {
      buttonText() {
        if(this.connecting) return 'connecting...'
        return 'Connect'
-     }
+     },
+     ...mapGetters('layout', ['headerHeight'])
    },
    methods: {
      openModal() {

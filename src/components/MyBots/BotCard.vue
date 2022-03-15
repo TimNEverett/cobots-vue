@@ -5,7 +5,7 @@
     </div>
 
     <button 
-      v-if="mintPhaseComplete && botColor"
+      v-if="canFlip && botColor"
       class="w-full py-3 rounded-lg uppercase font-black text-sm"
       :class="{'bg-cobots-red': botColor === 'blue', 'bg-sky-400': botColor === 'red', }"
       @click="toggleBotColor(index)"
@@ -42,7 +42,7 @@ export default {
   },
   computed: {
     ...mapGetters('bots', ['imageByIndex', 'colorByIndex']),
-    ...mapGetters('mint', ['mintPhaseComplete']),
+    ...mapGetters('contractState', ['canFlip']),
     tokenURI() {
       return this.imageByIndex(this.index)
     },

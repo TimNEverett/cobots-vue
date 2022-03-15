@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col justify-center items-center py-16">
     <div class="uppercase text-5xl text-white font-black">my bots</div>
-    <div class="flex flex-col w-64 space-y-4 py-8" v-if="mintPhaseComplete">
+    <div class="flex flex-col w-64 space-y-4 py-8" v-if="canFlip">
       <button 
         class="w-full py-4 rounded-lg uppercase font-black text-sm bg-sky-400"
         :class="{'opacity-50': allBlue, 'cursor-not-allowed': allBlue }"
@@ -19,7 +19,7 @@
       </button> 
 
     </div>
-    <div class="flex justify-center flex-wrap px-32 gap-4">
+    <div class="flex justify-center flex-wrap px-16 gap-4">
       <bot-card 
         v-for="b in myBots" 
         :key="b"
@@ -39,18 +39,21 @@ export default {
   },
   computed: {
     ...mapGetters('bots', ['myBots', 'allRed', 'allBlue']),
-    ...mapGetters('mint', ['mintPhaseComplete']),
+    ...mapGetters('contractState', ['canFlip']),
   },
   methods: {
     ...mapActions('bots', ['flipAllColors']),
-    flipRed() {
+    ...mapActions('bonus', ['getNumBlue']),
+    async flipRed() {
       if(!this.allRed) {
-        this.flipAllColors('red')
+        await this.flipAllColors('red')
+        this.getNumBlue()
       }
     },
-    flipBlue() {
+    async flipBlue() {
       if(!this.allBlue) {
-        this.flipAllColors('blue')
+        await this.flipAllColors('blue')
+        this.getNumBlue()
       }
     }
   }
