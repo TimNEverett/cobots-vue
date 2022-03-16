@@ -1,9 +1,9 @@
 <template>
-  <div class="text-white bg-black flex flex-col justify-center py-16 px-4 lg:w-[720px]">
+  <div class="text-white bg-black flex flex-col justify-center items-center pt-16 pb-10 px-4 lg:w-[720px]">
     <div class="font-extrabold text-5xl text-center">INFO</div>
-    <div class="divide-y text-xl">
-      <div class="text-center space-y-4 py-16">
-        <p>Co-bots is an NFT project with a twist:</p>
+    <div class="divide-y divide-cobots-silver-3 text-xl">
+      <div class="text-center space-y-4 pt-[32px] pb-10 leading-8">
+        <p>Co-Bots is a 10K pfp project with a twist:</p>
         <p class="font-extrabold">Each Co-Bot doubles as a ticket in a 250ETH raffle!</p>
         <p class="font-extrabold">(10 prizes of 25ETH)</p>
       </div>
@@ -17,7 +17,7 @@
 
       <info-sub-section 
         question="How will the raffle work?">
-        The raffle will be drawn 24 hours after the last Co-Bot is minted. The 10 winning Co-Bots will be randomly drawn by the Co-Bots smart contract, one winner every 30 seconds. The winning Co-Bots will appear on this site as they're drawn and the prizes will be sent to the associated wallets immediately by the contract.
+        The raffle will be drawn 24 hours after the last Co-Bot is minted. The 10 winning Co-Bots will be randomly drawn by our smart contract and appear on this site, one winner every minute. The prizes will be immediately sent by the contract to the wallets holding the winning Co-Bots.
       </info-sub-section>
 
       <info-sub-section
@@ -45,7 +45,7 @@
       </info-sub-section>
 
       <info-sub-section question="How many Co-Bots can I mint?">
-        You can mint 20 Co-Bots per wallet. 🥺
+        You can mint 20 Co-Bots.
       </info-sub-section>
 
       <info-sub-section question="What happens after the raffle?">
@@ -58,11 +58,11 @@
       </info-sub-section>
 
       <info-sub-section question="Can the same wallet win multiple prizes?">
-        No. Once a winning Co-Bot has been chosen, the smart contract will add the associated wallet address to a list of addresses that are no longer eligible to win.
+        No. Once a winning Co-Bot has been chosen, the associated wallet will not be able to win again.
       </info-sub-section>
 
       <info-sub-section question="Can the creators win prizes?">
-        No. We’ll be minting 10 Co-Bots for ourselves, but they won’t be eligible to win prizes.
+        No. We’ll be minting 20 Co-Bots for ourselves, but they won’t be eligible to win prizes.
       </info-sub-section>
 
       <info-sub-section question="What are the royalties on secondary sales?">
@@ -82,16 +82,13 @@
           We won’t be able to withdraw any ETH until one of the following conditions is met:
         </div>
 
-        <ol class="list-decimal list-inside space-y-3">
+        <ol class="list-decimal list-inside space-y-3 pl-2">
           <li>
             The raffle is complete and all the prizes have been sent to the winners
           </li> 
           <li>
             The Co-Bots didn’t mint out and the 7 day refund period has passed
           </li> 
-          <li>
-            Block ________ has been mined on Ethereum, roughly 21 days after contract deployment (this condition is a fail safe)
-          </li>
         </ol>
 
         <div>
@@ -108,7 +105,7 @@
       </info-sub-section>
 
     </div>
-    <Logo class="mt-16 fill-cobots-silver-2"/>
+    <Logo class="mt-20 fill-cobots-silver-2 w-[96px]"/>
   </div>
 </template>
 
