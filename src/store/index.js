@@ -5,7 +5,6 @@ import mint from './mint.store'
 import bonus from './bonus.store'
 import prizes from './prizes.store'
 import contractState from './contractState.store'
-import layout from './layout.store'
 
 const store = createStore({
   modules: {
@@ -15,7 +14,6 @@ const store = createStore({
     bonus,
     prizes,
     contractState,
-    layout
   },
   
 })
