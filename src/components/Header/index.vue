@@ -1,5 +1,5 @@
 <template>
-<div class="bg-black h-[72px] flex flex-col justify-center fixed w-full border-b-2 border-white">
+<div class="bg-black h-[72px] flex flex-col justify-center fixed w-full border-b-2 border-white z-50">
   <div class="flex py-2 pl-2 justify-between h-12 sm:hidden ">
     <Logo class="w-[96px] fill-white"/>
     <social-media-buttons class="w-24"/>
