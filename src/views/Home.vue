@@ -63,7 +63,7 @@ export default {
   methods: {
     ...mapActions('contractState', ['setNow', 'getIsPublicSaleOpen', 'getIsMintedOut']),
     ...mapActions('eth', ['setWalletAddress']),
-    ...mapActions('mint', ['mintState']),
+    ...mapActions('mint', ['getMintInfo']),
     ...mapActions('bots', ['getMyBots']),
     ...mapActions('bonus', ['getBonusRaffleData']),
     scrollToBonusPrizes() {
@@ -90,6 +90,7 @@ export default {
 
     this.getIsPublicSaleOpen()
     this.getIsMintedOut()
+    this.getMintInfo()
   },
   beforeUnmount() {
     clearInterval(this.interval)

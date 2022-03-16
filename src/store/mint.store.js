@@ -3,9 +3,9 @@ import { utils } from 'ethers'
 export default {
   namespaced: true,
   state: () => ({ 
-    mintPrice: 0.05,
-    mintLimit: 10000,
-    maxMintPerAddress: 20,
+    mintPrice: 0,
+    mintLimit: 0,
+    maxMintPerAddress: 0,
     totalSupply: 0,
     mintInProgress: false,
     mintSuccessful: false
@@ -31,6 +31,17 @@ export default {
     },
    },
   actions: {
+    async getMintInfo({commit}) {
+      let mintPrice = await contract.MINT_PUBLIC_PRICE()
+      let formatted = utils.formatEther(mintPrice);
+      commit('SET_MINT_PRICE', formatted)
+
+      let maxPerAddress = await contract.MAX_MINT_PER_ADDRESS()
+      commit('SET_MAX_MINT_PER_ADDRESS', maxPerAddress)
+
+      let mintLimit = await contract.MAX_COBOTS()
+      commit('SET_MINT_LIMIT', mintLimit)
+    },
     async getTotalSupply({ commit }) {
       const totalSupply = await contract.totalSupply()
       commit('SET_TOTAL_SUPPLY', totalSupply)
