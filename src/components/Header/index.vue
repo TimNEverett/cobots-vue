@@ -1,13 +1,13 @@
 <template>
-<div class="bg-black" @resize="resizeHandler">
+<div class="bg-black h-[72px] flex flex-col justify-center fixed w-full border-b-2 border-white z-50">
   <div class="flex py-2 pl-2 justify-between h-12 sm:hidden ">
-    <Logo class=" fill-white"/>
+    <Logo class="w-[96px] fill-white"/>
     <social-media-buttons class="w-24"/>
   </div>
   <div class="flex-row flex items-center md:pl-9 sm:py-4 w-full pb-2">
     <Logo class="hidden sm:block fill-white"/>
 
-    <div class="w-full flex-row flex items-center justify-between sm:justify-center text-xs sm:text-xl">
+    <div class="w-full flex-row flex items-center justify-between sm:justify-center text-[16px] lg:divide-x divide-cobots-silver-2">
       <div 
         class="items-center px-2"
         :class="{'hidden lg:flex': canMint, 'flex': !canMint}"
@@ -58,15 +58,10 @@ export default {
     }
   },
   methods:{
-    ...mapActions('layout', ['setHeaderHeight']),
     ...mapActions('mint', ['getTotalSupply']),
-    resizeHandler(){
-      this.setHeaderHeight(this.$el.clientHeight)
-    }
   },
   mounted() {
     this.getTotalSupply()
-    this.setHeaderHeight(this.$el.clientHeight)
   }
 }
 </script>

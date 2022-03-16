@@ -16,6 +16,7 @@ module.exports = {
         'cobots-red': '#FF5967',
         'cobots-silver': '#CED5D9',
         'cobots-silver-2': '#919699',
+        'cobots-silver-3': '#616466'
       }
     },
   },

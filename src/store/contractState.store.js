@@ -65,6 +65,7 @@ export default {
         let mintedOutTimestamp = await contract.mintedOutTimestamp()
 
         commit('SET_MINTED_OUT_TIMESTAMP', mintedOutTimestamp.toNumber() * 1000)
+        commit('SET_MINTED_OUT_TIMESTAMP', Date.now())
 
         let mintRaffleDelay = await contract.COBOTS_MINT_RAFFLE_DELAY()
         commit('SET_MINT_RAFFLE_DELAY', mintRaffleDelay.toNumber() * 1000)

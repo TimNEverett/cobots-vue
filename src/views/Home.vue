@@ -1,8 +1,7 @@
 <template>
   <div class="overflow-hidden overscroll-none">
     <div 
-      class="flex flex-col justify-center items-center"
-      :style="{height: heightStyle}"
+      class="flex flex-col justify-center items-center h-[calc(100vh-72px)] mt-[72px]"
     >
       <div v-if="walletConnected" class="mt-4 absolute sm:right-4 top-20 sm:top-24">
         <wallet-button @viewBots="scrollToMyBots"/>
@@ -34,7 +33,6 @@ import MintPanel from "@/components/MintPanel.vue"
 import BonusChallengePanel from "@/components/BonusChallenge/index.vue"
 import { mapGetters, mapActions } from "vuex";
 import Raffle from "@/components/Raffle/index.vue"
-import layoutStore from '@/store/layout.store'
 
 export default {
   name: 'Home',
@@ -57,20 +55,15 @@ export default {
       'readyToRaffle',
     ]),
     ...mapGetters('bots', ['hasBots']),
-    ...mapGetters('layout', ['headerHeight']),
     ...mapGetters('contractState', [
       'canMint',
       'canFlip'
     ]),
-    heightStyle() {
-      if(this.canFlip || this.canMint || !this.walletConnected) return `calc(100vh - ${this.headerHeight}px)`
-      return 'auto'
-    }
   },
   methods: {
     ...mapActions('contractState', ['setNow', 'getIsPublicSaleOpen', 'getIsMintedOut']),
     ...mapActions('eth', ['setWalletAddress']),
-    ...mapActions('mint', ['mintState']),
+    ...mapActions('mint', ['getMintInfo']),
     ...mapActions('bots', ['getMyBots']),
     ...mapActions('bonus', ['getBonusRaffleData']),
     scrollToBonusPrizes() {
@@ -97,6 +90,7 @@ export default {
 
     this.getIsPublicSaleOpen()
     this.getIsMintedOut()
+    this.getMintInfo()
   },
   beforeUnmount() {
     clearInterval(this.interval)
