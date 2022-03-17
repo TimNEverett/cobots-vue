@@ -66,7 +66,6 @@ export default {
         VITE_CONTRACT_ADDRESS 
       } = import.meta.env
       let link = `${VITE_OPENSEA_BASE_URL}${VITE_CONTRACT_ADDRESS}/${this.index}`
-      console.log(link)
       return link
     },
   },

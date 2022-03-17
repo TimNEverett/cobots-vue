@@ -53,13 +53,13 @@ export default {
     ...mapGetters('eth', [
       'walletConnected',
       'walletAddress',
-      'readyToRaffle',
     ]),
     ...mapGetters('bots', ['hasBots']),
     ...mapGetters('contractState', [
       'canMint',
       'canFlip'
     ]),
+    ...mapGetters('mint', ['mintSuccessful'])
   },
   methods: {
     ...mapActions('contractState', ['setNow', 'getIsPublicSaleOpen', 'getIsMintedOut']),
@@ -79,6 +79,12 @@ export default {
   watch: {
     walletAddress() {
       this.getMyBots(this.walletAddress)
+    },
+    mintSuccessful() {
+      if(this.walletConnected && this.mintSuccessful) {
+        this.getMyBots(this.walletAddress)
+        this.getIsMintedOut()
+      }
     },
     canMint() {
       if(this.canMint) this.getBonusRaffleData()
