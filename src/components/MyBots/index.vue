@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col justify-center items-center py-16">
-    <div class="uppercase text-5xl text-white font-black">my bots</div>
+  <div class="flex flex-col justify-center items-center pt-16 pb-20">
+    <div class="uppercase text-5xl text-white font-black mb-10">my bots</div>
     <div class="flex flex-col w-64 space-y-4 py-8" v-if="canFlip">
       <button 
         class="w-full py-4 rounded-lg uppercase font-black text-sm bg-sky-400"

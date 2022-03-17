@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-black border-2 p-2 border-cobots-silver rounded-2xl space-y-2">
+  <div class="bg-black border-2 p-2 border-cobots-silver-3 rounded-2xl space-y-2">
     <div class=" bg-white text-black rounded-lg w-52 h-52 flex justify-center items-center">
-      <img v-if="tokenURI" :src="tokenURI" class="rounded-lg"/>
+      <img v-if="tokenURI" :src="tokenURI" class="rounded-lg" @load="onImageLoad"/>
     </div>
 
     <button 
@@ -13,29 +13,36 @@
       {{flipButtonText}}
     </button>
 
-    <div class="grid grid-cols-2 gap-2">
-      <button class="bg-cobots-silver text-black p-2 rounded-lg uppercase font-black flex">
-        <twitter-logo class="fill-black w-5 mr-2"/>
+    <div class="grid grid-cols-2 gap-[24px]">
+      <a
+        :href="openseaLink"
+        target="_blank"
+        class="bg-cobots-silver text-black text-sm leading-[14px] pt-[14px] pb-[12px] rounded-lg uppercase font-black flex items-center justify-center">
+        <TwitterLogo class="fill-black w-5 mr-[4px]"/>
         share
-      </button>
-      <button class="bg-cobots-silver text-black p-2 rounded-lg uppercase font-black">save</button>
-    </div>
-    
+      </a>
+      <button
+        @click="download"
+        class="bg-cobots-silver text-black text-sm leading-[14px] pt-[14px] pb-[12px] rounded-lg uppercase font-black"
+      >save</button>
+    </div>    
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import TwitterLogo from "../TwitterLogo.vue"
+import TwitterLogo from '../TwitterLogo.vue'
 export default {
   name: 'BotCard',
+  components: {
+    TwitterLogo
+  },
   data() {
     return {
       imgUrl: null,
+      canvas: document.createElement("canvas"),
+      context: null
     }
-  },
-  components: {
-    TwitterLogo
   },
   props: {
     index: Number,
@@ -53,15 +60,38 @@ export default {
       if(this.botColor === 'red') return 'Flip to blue'
       return 'Flip to red'
     },
+    openseaLink() {
+      const {
+        VITE_OPENSEA_BASE_URL, 
+        VITE_CONTRACT_ADDRESS 
+      } = import.meta.env
+      let link = `${VITE_OPENSEA_BASE_URL}${VITE_CONTRACT_ADDRESS}/${this.index}`
+      console.log(link)
+      return link
+    },
   },
   methods: {
     ...mapActions('bots', [
       'getImageForIndex', 
       'getBotColor', 
       'toggleBotColor'
-    ])
+    ]),
+    onImageLoad(e, f, g) {
+      this.context.drawImage(e.target, 0, 0, 624, 624)
+    },
+    download() {
+      let a = document.createElement('a')
+      let url = this.canvas.toDataURL()
+      a.download = `co-bot-${this.index}.png`
+      a.href = url
+      a.click()
+      URL.revokeObjectURL(url)
+    }
   },
   mounted() {
+    this.canvas.width = 624
+    this.canvas.height = 624
+    this.context = this.canvas.getContext("2d")
     this.getImageForIndex(this.index)
     this.getBotColor(this.index)
   }

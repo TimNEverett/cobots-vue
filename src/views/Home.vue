@@ -19,7 +19,8 @@
     </div>
   </div>
   <div class="bg-black text-white flex flex-col items-center">
-    <my-bots-section ref="my-bots" v-if="hasBots" />
+    <my-bots-section ref="my-bots" v-if="hasBots && walletConnected" />
+    <hr class="border-cobots-silver-3 w-full border"/>
     <info-section  ref="info-section"/>
   </div>
 </template>
