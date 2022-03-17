@@ -12,7 +12,7 @@
         question="Who created Co-Bots?">
         Co-Bots was created by 
         <a class="underline underline-offset-4 text-sky-400" href="https://twitter.com/s_m_l_g">smlg</a> 
-        with smart contract help from clemlaflemme.eth. We met as early members of the Chain Runners community! smlg is also a proud member of the Noadz, CrypToadz, and FRWC communities.
+        with smart contract help from clemlaflemme.eth. We met as early members of the Chain Runners community. smlg is also a proud member of the Noadz, CrypToadz, and FRWC communities.
       </info-sub-section>
 
       <info-sub-section 
@@ -41,7 +41,7 @@
       </info-sub-section>
 
       <info-sub-section question="What happens if the Co-Bots don't mint out?">
-        Minting will be live for 7 days. If the Co-Bots don't mint out by then, holders will be able to claim a full refund (minus gas) on this site and the raffle will be cancelled. You'll have 7 days to claim your refund.
+        Minting will be live for 7 days. If the Co-Bots don't mint out by then, holders will be able to claim a full refund (minus gas) on this site. You'll have 7 days to claim your refund.
       </info-sub-section>
 
       <info-sub-section question="How many Co-Bots can I mint?">
@@ -79,7 +79,7 @@
         </div>
 
         <div>
-          We won’t be able to withdraw any ETH until one of the following conditions is met:
+          We also won’t be able to withdraw any ETH until one of the following conditions is met:
         </div>
 
         <ol class="list-decimal list-inside space-y-3 pl-2">
