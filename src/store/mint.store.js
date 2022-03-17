@@ -46,7 +46,8 @@ export default {
       const totalSupply = await contract.totalSupply()
       commit('SET_TOTAL_SUPPLY', totalSupply)
     },
-    async mint({ commit, state }, numToMint) {
+    async mint({ commit, state, dispatch }, numToMint) {
+      commit('SET_MINT_SUCCESSFUL', false)
       commit('SET_MINT_IN_PROGRESS', true)
       let cost = (numToMint * state.mintPrice).toPrecision(2)
       try {
@@ -54,9 +55,9 @@ export default {
           numToMint, 
           { value: utils.parseEther(`${cost}`) 
         })
-        let result = await transaction.wait()
+        await transaction.wait()
         commit('SET_MINT_SUCCESSFUL', true)
-        dispatch('mintState')
+        dispatch('getTotalSupply')
       } catch(e) {
         console.log(e)
       }

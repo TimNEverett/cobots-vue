@@ -88,13 +88,11 @@ export default {
     mintSuccessful() {
       if(this.mintSuccessful) {
         this.numToMint = 1
-        this.getIsPublicSaleOpen()
       }
     }
   },
   methods:{
     ...mapActions('mint', ['mint']),
-    ...mapActions('contractState', ['getIsPublicSaleOpen']),
     increment() {
       if(!this.atMax) this.numToMint += 1
     },
