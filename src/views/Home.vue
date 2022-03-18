@@ -24,7 +24,7 @@
       />
       <img
         class="block lg:hidden"
-        src="../images/Bot Illustration - Mobile.svg"
+        src="../images/Bot-Illustration-Mobile.svg"
       />
     </div>
 
