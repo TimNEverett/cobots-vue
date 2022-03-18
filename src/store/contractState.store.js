@@ -103,14 +103,12 @@ export default {
     },
     canMint(state) {
       let endDate = state.publicSaleStartTimestamp + state.mintDuration;
-      // return state.isPublicSaleOpen && state.now < endDate;
-      return false;
+      return state.isPublicSaleOpen && state.now < endDate;
     },
     canFlip(state, getters) {
       if (getters.canMint) return false;
       let endDate = state.mintedOutTimestamp + state.mintRaffleDelay;
-      // return state.isMintedOut && state.now < endDate;
-      return false;
+      return state.isMintedOut && state.now < endDate;
     },
     cooperativeRaffleEnabled(state) {
       return state.cooperativeRaffleEnabled || true;
@@ -119,8 +117,7 @@ export default {
       return state.maxSupply;
     },
     mintFailed(state, getters) {
-      // return !getters.canMint && !state.isMintedOut
-      return true;
+      return !getters.canMint && !state.isMintedOut;
     },
   },
 };
