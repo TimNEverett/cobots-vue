@@ -5,7 +5,7 @@
     >
       <div
         v-if="walletConnected"
-        class="mt-4 absolute sm:right-4 top-20 sm:top-24"
+        class="absolute sm:right-4 top-[90px] sm:top-[90px]"
       >
         <wallet-button @viewBots="scrollToMyBots" />
       </div>
@@ -21,18 +21,19 @@
         src="../images/Bot-Illustration.svg"
       />
       <img
-        class="block lg:hidden w-full"
+        class="block lg:hidden"
         src="../images/Bot Illustration - Mobile.svg"
       />
     </div>
-  </div>
-  <div class="bg-black text-white flex flex-col items-center">
-    <my-bots-section ref="my-bots" v-if="hasBots && walletConnected" />
-    <hr
-      v-if="hasBots && walletConnected"
-      class="border-cobots-silver-3 w-full border"
-    />
-    <info-section ref="info-section" />
+
+    <div class="bg-black text-white flex flex-col items-center">
+      <my-bots-section ref="my-bots" v-if="hasBots && walletConnected" />
+      <hr
+        v-if="hasBots && walletConnected"
+        class="border-cobots-silver-3 w-full border"
+      />
+      <info-section ref="info-section" />
+    </div>
   </div>
 </template>
 
@@ -82,7 +83,7 @@ export default {
     },
     scrollToMyBots() {
       const el = this.$refs["my-bots"].$el;
-      this.$scrollTo(el, 600, { offset: 20 });
+      this.$scrollTo(el, 600, { offset: -40 });
     },
   },
   watch: {

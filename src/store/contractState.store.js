@@ -98,14 +98,12 @@ export default {
     },
     canMint(state) {
       let endDate = state.publicSaleStartTimestamp + state.mintDuration;
-      // return state.isPublicSaleOpen && state.now < endDate
-      return false;
+      return state.isPublicSaleOpen && state.now < endDate;
     },
     canFlip(state, getters) {
       if (getters.canMint) return false;
       let endDate = state.mintedOutTimestamp + state.mintRaffleDelay;
-      // return state.isMintedOut && state.now < endDate
-      return true;
+      return state.isMintedOut && state.now < endDate;
     },
     cooperativeRaffleEnabled(state) {
       return state.cooperativeRaffleEnabled;
