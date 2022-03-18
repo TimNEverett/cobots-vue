@@ -88,7 +88,7 @@ export default {
       "toggleBotColor",
     ]),
     onImageLoad(e, f, g) {
-      this.context.drawImage(e.target, 0, 0, 624, 624);
+      this.context.drawImage(e.target, 0, 0, 450, 450);
     },
     download() {
       let a = document.createElement("a");
@@ -100,8 +100,8 @@ export default {
     },
   },
   mounted() {
-    this.canvas.width = 624;
-    this.canvas.height = 624;
+    this.canvas.width = 450;
+    this.canvas.height = 450;
     this.context = this.canvas.getContext("2d");
     this.getImageForIndex(this.index);
     this.getBotColor(this.index);
