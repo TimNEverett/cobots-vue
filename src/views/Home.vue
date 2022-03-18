@@ -2,7 +2,7 @@
   <div class="overflow-hidden overscroll-none">
     <div
       class="flex flex-col justify-center items-center mt-[72px]"
-      :class="{ 'h-[calc(100vh-72px)]': canFlip || canMint }"
+      :class="{ 'h-[calc(100vh-72px)]': canFlip || canMint || mintFailed }"
     >
       <div
         v-if="walletConnected"
@@ -12,6 +12,7 @@
       </div>
       <connect-wallet-panel v-if="!walletConnected && !canFlip && canMint" />
       <mint-panel v-else-if="canMint" />
+      <div class="flex-grow" v-else-if="mintFailed"></div>
       <bonus-challenge-panel
         v-else-if="canFlip"
         @moreDetailsClick="scrollToBonusPrizes"
@@ -65,7 +66,7 @@ export default {
   computed: {
     ...mapGetters("eth", ["walletConnected", "walletAddress"]),
     ...mapGetters("bots", ["hasBots"]),
-    ...mapGetters("contractState", ["canMint", "canFlip"]),
+    ...mapGetters("contractState", ["canMint", "canFlip", "mintFailed"]),
     ...mapGetters("mint", ["mintSuccessful"]),
     showBots() {
       if (this.hasBots && this.walletConnected) return true;

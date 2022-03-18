@@ -118,5 +118,9 @@ export default {
     maxSupply(state) {
       return state.maxSupply;
     },
+    mintFailed(state, getters) {
+      // return !getters.canMint && !state.isMintedOut
+      return true;
+    },
   },
 };
