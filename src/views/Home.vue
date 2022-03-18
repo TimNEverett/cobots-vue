@@ -1,106 +1,115 @@
 <template>
   <div class="overflow-hidden overscroll-none">
-    <div 
+    <div
       class="flex flex-col justify-center items-center h-[calc(100vh-72px)] mt-[72px]"
     >
-      <div v-if="walletConnected" class="mt-4 absolute sm:right-4 top-20 sm:top-24">
-        <wallet-button @viewBots="scrollToMyBots"/>
+      <div
+        v-if="walletConnected"
+        class="mt-4 absolute sm:right-4 top-20 sm:top-24"
+      >
+        <wallet-button @viewBots="scrollToMyBots" />
       </div>
-      <connect-wallet-panel  v-if="!walletConnected"/>
-      <mint-panel v-else-if="canMint"/>
-      <bonus-challenge-panel 
+      <connect-wallet-panel v-if="!walletConnected" />
+      <mint-panel v-else-if="canMint" />
+      <bonus-challenge-panel
         v-else-if="canFlip"
         @moreDetailsClick="scrollToBonusPrizes"
       />
-      <raffle v-else/>
-      <img 
-        src="../images/Bot-Illustration.svg" 
-      >
+      <raffle v-else />
+      <img
+        class="hidden lg:block w-full"
+        src="../images/Bot-Illustration.svg"
+      />
+      <img
+        class="block lg:hidden w-full"
+        src="../images/Bot Illustration - Mobile.svg"
+      />
     </div>
   </div>
   <div class="bg-black text-white flex flex-col items-center">
     <my-bots-section ref="my-bots" v-if="hasBots && walletConnected" />
-    <hr class="border-cobots-silver-3 w-full border"/>
-    <info-section  ref="info-section"/>
+    <hr
+      v-if="hasBots && walletConnected"
+      class="border-cobots-silver-3 w-full border"
+    />
+    <info-section ref="info-section" />
   </div>
 </template>
 
 <script>
-import InfoSection from "@/components/InfoSection.vue"
-import WalletButton from "@/components/walletButton.vue"
-import MyBotsSection from "@/components/MyBots/index.vue"
-import ConnectWalletPanel from "@/components/ConnectWalletPanel.vue"
-import MintPanel from "@/components/MintPanel.vue"
-import BonusChallengePanel from "@/components/BonusChallenge/index.vue"
+import InfoSection from "@/components/InfoSection.vue";
+import WalletButton from "@/components/walletButton.vue";
+import MyBotsSection from "@/components/MyBots/index.vue";
+import ConnectWalletPanel from "@/components/ConnectWalletPanel.vue";
+import MintPanel from "@/components/MintPanel.vue";
+import BonusChallengePanel from "@/components/BonusChallenge/index.vue";
 import { mapGetters, mapActions } from "vuex";
-import Raffle from "@/components/Raffle/index.vue"
+import Raffle from "@/components/Raffle/index.vue";
 
 export default {
-  name: 'Home',
-    components: {
-      InfoSection,
-      WalletButton,
-      MyBotsSection,
-      ConnectWalletPanel,
-      MintPanel,
-      BonusChallengePanel,
-      Raffle
+  name: "Home",
+  components: {
+    InfoSection,
+    WalletButton,
+    MyBotsSection,
+    ConnectWalletPanel,
+    MintPanel,
+    BonusChallengePanel,
+    Raffle,
   },
   data: () => ({
-    interval: null
+    interval: null,
   }),
   computed: {
-    ...mapGetters('eth', [
-      'walletConnected',
-      'walletAddress',
-    ]),
-    ...mapGetters('bots', ['hasBots']),
-    ...mapGetters('contractState', [
-      'canMint',
-      'canFlip'
-    ]),
-    ...mapGetters('mint', ['mintSuccessful'])
+    ...mapGetters("eth", ["walletConnected", "walletAddress"]),
+    ...mapGetters("bots", ["hasBots"]),
+    ...mapGetters("contractState", ["canMint", "canFlip"]),
+    ...mapGetters("mint", ["mintSuccessful"]),
   },
   methods: {
-    ...mapActions('contractState', ['setNow', 'getIsPublicSaleOpen', 'getIsMintedOut']),
-    ...mapActions('eth', ['setWalletAddress']),
-    ...mapActions('mint', ['getMintInfo']),
-    ...mapActions('bots', ['getMyBots']),
-    ...mapActions('bonus', ['getBonusRaffleData']),
+    ...mapActions("contractState", [
+      "setNow",
+      "getIsPublicSaleOpen",
+      "getIsMintedOut",
+    ]),
+    ...mapActions("eth", ["setWalletAddress"]),
+    ...mapActions("mint", ["getMintInfo"]),
+    ...mapActions("bots", ["getMyBots"]),
+    ...mapActions("bonus", ["getBonusRaffleData"]),
     scrollToBonusPrizes() {
-      const el = this.$refs['info-section'].$refs['bonus-prizes-info'].$el
-      this.$scrollTo(el, 600, { offset: 20 })
+      const el = this.$refs["info-section"].$refs["bonus-prizes-info"].$el;
+      this.$scrollTo(el, 600, { offset: 20 });
     },
     scrollToMyBots() {
-      const el = this.$refs['my-bots'].$el
-      this.$scrollTo(el, 600, { offset: 20 })
-    }
+      const el = this.$refs["my-bots"].$el;
+      this.$scrollTo(el, 600, { offset: 20 });
+    },
   },
   watch: {
     walletAddress() {
-      this.getMyBots(this.walletAddress)
+      this.getMyBots(this.walletAddress);
     },
     mintSuccessful() {
-      if(this.walletConnected && this.mintSuccessful) {
-        this.getMyBots(this.walletAddress)
-        this.getIsMintedOut()
+      if (this.walletConnected && this.mintSuccessful) {
+        this.getMyBots(this.walletAddress);
+        this.getIsMintedOut();
       }
     },
     canMint() {
-      if(this.canMint) this.getBonusRaffleData()
-    }
+      if (this.canMint) this.getBonusRaffleData();
+    },
   },
   mounted() {
     this.interval = setInterval(() => {
-      this.setNow(Date.now())  
-    }, 1000)
+      this.setNow(Date.now());
+    }, 1000);
 
-    this.getIsPublicSaleOpen()
-    this.getIsMintedOut()
-    this.getMintInfo()
+    this.getIsPublicSaleOpen();
+    this.getIsMintedOut();
+    this.getMintInfo();
   },
   beforeUnmount() {
-    clearInterval(this.interval)
-  }
-}
+    clearInterval(this.interval);
+  },
+};
 </script>
