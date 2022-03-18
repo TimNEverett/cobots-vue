@@ -1,7 +1,8 @@
 <template>
   <div class="overflow-hidden overscroll-none">
     <div
-      class="flex flex-col justify-center items-center h-[calc(100vh-72px)] mt-[72px]"
+      class="flex flex-col justify-center items-center mt-[72px]"
+      :class="{ 'h-[calc(100vh-72px)]': canFlip || canMint }"
     >
       <div
         v-if="walletConnected"
@@ -9,7 +10,7 @@
       >
         <wallet-button @viewBots="scrollToMyBots" />
       </div>
-      <connect-wallet-panel v-if="!walletConnected" />
+      <connect-wallet-panel v-if="!walletConnected && !canFlip && canMint" />
       <mint-panel v-else-if="canMint" />
       <bonus-challenge-panel
         v-else-if="canFlip"
@@ -27,9 +28,9 @@
     </div>
 
     <div class="bg-black text-white flex flex-col items-center">
-      <my-bots-section ref="my-bots" v-if="hasBots && walletConnected" />
+      <my-bots-section ref="my-bots" v-if="showBots" />
       <hr
-        v-if="hasBots && walletConnected"
+        v-if="canFlip || hasBots"
         class="border-cobots-silver-3 w-full border"
       />
       <info-section ref="info-section" />
@@ -66,6 +67,12 @@ export default {
     ...mapGetters("bots", ["hasBots"]),
     ...mapGetters("contractState", ["canMint", "canFlip"]),
     ...mapGetters("mint", ["mintSuccessful"]),
+    showBots() {
+      if (this.hasBots && this.walletConnected) return true;
+      if (!this.walletConnected && this.canFlip) return true;
+      if (!this.walletConnected && !this.canFlip && !this.canMint) return true;
+      return false;
+    },
   },
   methods: {
     ...mapActions("contractState", [
@@ -79,7 +86,7 @@ export default {
     ...mapActions("bonus", ["getBonusRaffleData"]),
     scrollToBonusPrizes() {
       const el = this.$refs["info-section"].$refs["bonus-prizes-info"].$el;
-      this.$scrollTo(el, 600, { offset: 20 });
+      this.$scrollTo(el, 600, { offset: -50 });
     },
     scrollToMyBots() {
       const el = this.$refs["my-bots"].$el;

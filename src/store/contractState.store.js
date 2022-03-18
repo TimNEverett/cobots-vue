@@ -12,7 +12,7 @@ export default {
     mintedOutTimestamp: null, // when project minted out
     isDrawOpen: false,
     cooperativeRaffleEnabled: false,
-    maxSupply: 10000,
+    maxSupply: null,
   }),
   mutations: {
     SET_NOW(state, now) {
@@ -42,12 +42,17 @@ export default {
     SET_COOPERATIVE_RAFFLE_ENABLED(state, isEnabled) {
       state.cooperativeRaffleEnabled = isEnabled;
     },
+    SET_MAX_SUPPLY(state, supply) {
+      state.maxSupply = supply;
+    },
   },
   actions: {
     setNow({ commit }, now) {
       commit("SET_NOW", now);
     },
     async getIsPublicSaleOpen({ commit }) {
+      let maxSupply = await contract.MAX_COBOTS();
+      commit("SET_MAX_SUPPLY", maxSupply);
       let isOpen = await contract.isPublicSaleOpen();
       commit("SET_IS_PUBLIC_SALE_OPEN", isOpen);
       if (isOpen) {
@@ -98,15 +103,17 @@ export default {
     },
     canMint(state) {
       let endDate = state.publicSaleStartTimestamp + state.mintDuration;
-      return state.isPublicSaleOpen && state.now < endDate;
+      // return state.isPublicSaleOpen && state.now < endDate;
+      return false;
     },
     canFlip(state, getters) {
       if (getters.canMint) return false;
       let endDate = state.mintedOutTimestamp + state.mintRaffleDelay;
-      return state.isMintedOut && state.now < endDate;
+      // return state.isMintedOut && state.now < endDate;
+      return false;
     },
     cooperativeRaffleEnabled(state) {
-      return state.cooperativeRaffleEnabled;
+      return state.cooperativeRaffleEnabled || true;
     },
     maxSupply(state) {
       return state.maxSupply;
