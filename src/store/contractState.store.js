@@ -103,7 +103,8 @@ export default {
     },
     canMint(state) {
       let endDate = state.publicSaleStartTimestamp + state.mintDuration;
-      return state.isPublicSaleOpen && state.now < endDate;
+      // return state.isPublicSaleOpen && state.now < endDate;
+      return false;
     },
     canFlip(state, getters) {
       if (getters.canMint) return false;
