@@ -5,7 +5,7 @@
         <img class="w-4 h-4" src="../images/minus-icon.svg" />
       </counter-button>
 
-      <div class="text-9xl font-black flex">
+      <div class="text-9xl leading-[144px] font-black flex">
         <div class="w-24 mr-1 text-center">{{ firstDigit }}</div>
         <div class="w-24 text-center">{{ secondDigit }}</div>
       </div>
