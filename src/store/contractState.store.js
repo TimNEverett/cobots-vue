@@ -82,7 +82,7 @@ export default {
         commit(
           "SET_MINT_RAFFLE_DELAY",
           // mintRaffleDelay.toNumber() * 1000
-          10000
+          60000
         );
       }
     },
