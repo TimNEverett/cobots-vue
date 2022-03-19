@@ -8,7 +8,12 @@
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2">
-      <winner-card v-for="i in 10" :key="i" />
+      <winner-card
+        v-for="w in mainWinners"
+        :key="w.idx"
+        :address="w.address"
+        :tokenId="w.tokenId"
+      />
     </div>
   </div>
 </template>
@@ -20,7 +25,11 @@ export default {
   components: { WinnerCard },
   name: "MainPrizes",
   computed: {
-    ...mapGetters("prizes", ["mainDrawCount", "mainWinnersCount"]),
+    ...mapGetters("prizes", [
+      "mainWinners",
+      "mainDrawCount",
+      "mainWinnersCount",
+    ]),
   },
 };
 </script>

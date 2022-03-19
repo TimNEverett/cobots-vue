@@ -33,7 +33,7 @@ export default {
     interval: null,
   }),
   computed: {
-    ...mapGetters("contractState", ["cooperativeRaffleEnabled"]),
+    ...mapGetters("contractState", ["cooperativeRaffleEnabled", "canFlip"]),
     ...mapGetters("prizes", ["drawCount"]),
   },
   methods: {
@@ -41,6 +41,9 @@ export default {
     ...mapActions("prizes", ["getDrawCount", "getRaffleInfo", "getWinners"]),
   },
   watch: {
+    canFlip() {
+      this.getDrawCount();
+    },
     drawCount() {
       console.log("draw count changed", this.drawCount);
       this.getWinners();
@@ -52,7 +55,7 @@ export default {
     this.getDrawCount();
     this.interval = setInterval(() => {
       this.getDrawCount();
-    }, 60000);
+    }, 5000);
   },
   beforeUnmount() {
     clearInterval(this.interval);

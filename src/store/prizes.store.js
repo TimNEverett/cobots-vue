@@ -1,64 +1,88 @@
-import { contract } from "@/services/contract.service"
+import { contract } from "@/services/contract.service";
+import { saturate } from "tailwindcss/defaultTheme";
 export default {
   namespaced: true,
-  state: () => ({ 
+  state: () => ({
     drawCount: 0,
     winners: [],
-    botsOfWinners: {},
+    winningBots: {},
     mainWinnersCount: 0,
     bonusWinnersCount: 0,
   }),
-  mutations: { 
+  mutations: {
     SET_DRAW_COUNT(state, count) {
-      state.drawCount = count
+      state.drawCount = count;
     },
     SET_WINNERS(state, winners) {
-      state.winners = winners
+      state.winners = winners;
     },
     SET_MAIN_WINNERS_COUNT(state, count) {
-      state.mainWinnersCount = count
+      state.mainWinnersCount = count;
     },
     SET_BONUS_WINNERS_COUNT(state, count) {
-      state.bonusWinnersCount = count
-    }
+      state.bonusWinnersCount = count;
+    },
+    SET_WINNING_BOT_BY_INDEX(state, { image, index }) {
+      state.winningBots[index] = image;
+    },
   },
-  actions: { 
+  actions: {
     async getRaffleInfo({ commit }) {
-      let count = await contract.MAIN_RAFFLE_WINNERS_COUNT()
-      commit('SET_MAIN_WINNERS_COUNT', count)
+      let count = await contract.MAIN_RAFFLE_WINNERS_COUNT();
+      commit("SET_MAIN_WINNERS_COUNT", count);
 
-      let bonusCount = await contract.COORDINATION_RAFFLE_WINNERS_COUNT()
-      commit('SET_BONUS_WINNERS_COUNT', bonusCount)
+      let bonusCount = await contract.COORDINATION_RAFFLE_WINNERS_COUNT();
+      commit("SET_BONUS_WINNERS_COUNT", bonusCount);
     },
     async getDrawCount({ commit }) {
-      let drawCount = await contract.drawCount()
-      commit('SET_DRAW_COUNT', drawCount)
+      let drawCount = await contract.drawCount();
+      commit("SET_DRAW_COUNT", drawCount);
     },
     async getWinners({ commit, state }) {
-      let arr = [...Array(state.drawCount).keys()]
-      const winners = await Promise.all(arr.map(async i => {
-        let address = await contract.winners(i)
-        return address
-      }))
-      commit('SET_WINNERS', winners)
+      let arr = [...Array(state.drawCount).keys()];
+      const winners = await Promise.all(
+        arr.map(async (i) => {
+          const [address, tokenId] = await contract.winners(i);
+          return { idx: i, address, tokenId };
+        })
+      );
+      commit("SET_WINNERS", winners);
+    },
+    async getBotForTokenIndex({ commit }, index) {
+      const tokenURI = await contract.tokenURI(index);
+      const { image_data } = JSON.parse(
+        tokenURI.split("data:application/json,")[1]
+      );
+      commit("SET_WINNING_BOT_BY_INDEX", { image: image_data, index });
     },
   },
-  getters: { 
+  getters: {
     drawCount(state) {
-      return state.drawCount
+      return state.drawCount;
     },
     mainDrawCount(state) {
-      return state.drawCount < state.mainWinnersCount ? state.drawCount : state.mainWinnersCount
+      return state.drawCount < state.mainWinnersCount
+        ? state.drawCount
+        : state.mainWinnersCount;
     },
     bonusDrawCount(state) {
-      let val = state.drawCount - state.mainWinnersCount
-      return val > 0 ? val : 0
+      let val = state.drawCount - state.mainWinnersCount;
+      return val > 0 ? val : 0;
     },
     mainWinnersCount(state) {
-      return state.mainWinnersCount
+      return state.mainWinnersCount;
     },
     bonusWinnersCount(state) {
-      return state.bonusWinnersCount
-    }
-  }
-}
+      return state.bonusWinnersCount;
+    },
+    mainWinners(state, getters) {
+      return state.winners.slice(0, getters.mainDrawCount);
+    },
+    bonusWinners(state, getters) {
+      return state.winners.slice(getters.mainWinnersCount, getters.drawCount);
+    },
+    botByTokenIndex: (state) => (index) => {
+      return state.winningBots[index];
+    },
+  },
+};
