@@ -20,7 +20,8 @@
       class="mb-4"
       :disabled="mintInProgress || mintedLimit || !canMint"
     >
-      {{ mintBtnText }}
+      <loading-animation v-if="mintInProgress" />
+      <text v-else>{{ mintBtnText }}</text>
     </cb-button>
 
     <scroll-label v-if="mintSuccessful" class="text-cobots-green">
@@ -38,12 +39,14 @@ import cbButton from "./shared/cbButton.vue";
 import scrollLabel from "./shared/scrollLabel.vue";
 import counterButton from "./counterButton.vue";
 import { mapActions, mapGetters } from "vuex";
+import LoadingAnimation from "./shared/loadingAnimation.vue";
 export default {
   name: "MintPanel",
   components: {
     cbButton,
     scrollLabel,
     counterButton,
+    LoadingAnimation,
   },
   data() {
     return {
