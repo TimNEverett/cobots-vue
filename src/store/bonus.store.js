@@ -32,11 +32,12 @@ export default {
     },
   },
   getters: {
-    numRed(state) {
+    //NOTE: numBlue and numRed are swapped to account for an error in the contract.
+    numBlue(state) {
       if (state.numBlue === null || state.maxSupply === null) return 0;
       return state.maxSupply - state.numBlue;
     },
-    numBlue(state) {
+    numRed(state) {
       if (state.numBlue === null || state.maxSupply === null) return 0;
       return state.numBlue;
     },

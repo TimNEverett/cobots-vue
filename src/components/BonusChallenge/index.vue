@@ -81,7 +81,7 @@ export default {
   },
   watch: {
     now() {
-      if (this.now % 5) {
+      if (this.now % 5 == 0) {
         this.getNumBlue();
       }
     },

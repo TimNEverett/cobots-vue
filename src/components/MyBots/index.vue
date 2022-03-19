@@ -11,7 +11,10 @@
     <div class="flex flex-col space-y-4 pb-5" v-else-if="canFlip && hasBots">
       <button
         class="w-[320px] h-[65px] rounded-lg uppercase font-black text-[20px] leading-[20px] pt-[24px] pb-[20px] bg-sky-400"
-        :class="{ 'opacity-50': allBlue, 'cursor-not-allowed': allBlue }"
+        :class="{
+          'opacity-50': allBlue || flipInProgress,
+          'cursor-not-allowed': allBlue || flipInProgress,
+        }"
         @click="flipBlue"
       >
         Flip All to blue
@@ -19,7 +22,10 @@
 
       <button
         class="w-[320px] h-[65px] rounded-lg uppercase font-black text-[20px] leading-[20px] pt-[24px] pb-[20px] bg-cobots-red"
-        :class="{ 'opacity-50': allRed, 'cursor-not-allowed': allRed }"
+        :class="{
+          'opacity-50': allRed || flipInProgress,
+          'cursor-not-allowed': allRed || flipInProgress,
+        }"
         @click="flipRed"
       >
         Flip All to Red
@@ -52,7 +58,13 @@ export default {
     connecting: false,
   }),
   computed: {
-    ...mapGetters("bots", ["myBots", "allRed", "allBlue", "hasBots"]),
+    ...mapGetters("bots", [
+      "myBots",
+      "allRed",
+      "allBlue",
+      "hasBots",
+      "flipInProgress",
+    ]),
     ...mapGetters("contractState", ["canFlip"]),
     ...mapGetters("eth", ["walletConnected"]),
     buttonText() {
@@ -64,12 +76,14 @@ export default {
     ...mapActions("bots", ["flipAllColors"]),
     ...mapActions("bonus", ["getNumBlue"]),
     async flipRed() {
+      if (this.flipInProgress) return;
       if (!this.allRed) {
         await this.flipAllColors("red");
         this.getNumBlue();
       }
     },
     async flipBlue() {
+      if (this.flipInProgress) return;
       if (!this.allBlue) {
         await this.flipAllColors("blue");
         this.getNumBlue();

@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     ...mapGetters("mint", ["totalSupply", "mintPrice", "mintLimit"]),
-    ...mapGetters("contractState", ["canMint", "maxSupply"]),
+    ...mapGetters("contractState", ["canMint", "maxSupply", "now"]),
     totalString() {
       if (this.totalSupply) return this.totalSupply.toLocaleString("en-US");
       return "";
@@ -56,6 +56,11 @@ export default {
   },
   methods: {
     ...mapActions("mint", ["getTotalSupply"]),
+  },
+  wathc: {
+    now() {
+      if (this.canMint && this.now % 5 == 0) this.getTotalSupply();
+    },
   },
   mounted() {
     this.getTotalSupply();
