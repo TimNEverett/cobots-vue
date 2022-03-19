@@ -16,7 +16,26 @@
         "type": "address"
       },
       { "internalType": "address", "name": "link", "type": "address" },
-      { "internalType": "bytes32", "name": "keyHash", "type": "bytes32" }
+      { "internalType": "bytes32", "name": "keyHash", "type": "bytes32" },
+      {
+        "components": [
+          { "internalType": "uint16", "name": "maxCobots", "type": "uint16" },
+          {
+            "internalType": "uint72",
+            "name": "mintPublicPrice",
+            "type": "uint72"
+          },
+          {
+            "internalType": "uint8",
+            "name": "mainRaffleWinnersCount",
+            "type": "uint8"
+          },
+          { "internalType": "uint24", "name": "timeUnit", "type": "uint24" }
+        ],
+        "internalType": "struct CoBots.Parameters",
+        "name": "parameters",
+        "type": "tuple"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -173,14 +192,14 @@
   {
     "inputs": [],
     "name": "COORDINATION_RAFFLE_PRIZE",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [{ "internalType": "uint72", "name": "", "type": "uint72" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "COORDINATION_RAFFLE_THRESHOLD",
-    "outputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }],
+    "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -194,7 +213,7 @@
   {
     "inputs": [],
     "name": "MAIN_RAFFLE_PRIZE",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [{ "internalType": "uint72", "name": "", "type": "uint72" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -208,7 +227,7 @@
   {
     "inputs": [],
     "name": "MAX_COBOTS",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -269,13 +288,6 @@
   {
     "inputs": [],
     "name": "cancelSubscription",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "claimRefund",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -461,6 +473,13 @@
   },
   {
     "inputs": [],
+    "name": "openPublicSale",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "opensea",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
@@ -532,6 +551,13 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "s_subId",
+    "outputs": [{ "internalType": "uint64", "name": "", "type": "uint64" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       { "internalType": "address", "name": "from", "type": "address" },
       { "internalType": "address", "name": "to", "type": "address" },
@@ -578,15 +604,6 @@
       { "internalType": "address", "name": "opensea_", "type": "address" }
     ],
     "name": "setOpensea",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "timestamp", "type": "uint256" }
-    ],
-    "name": "setPublicSaleTimestamp",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -714,7 +731,10 @@
   {
     "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "name": "winners",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      { "internalType": "address", "name": "winner", "type": "address" },
+      { "internalType": "uint16", "name": "tokenId", "type": "uint16" }
+    ],
     "stateMutability": "view",
     "type": "function"
   },

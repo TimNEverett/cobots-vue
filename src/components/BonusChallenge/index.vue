@@ -2,16 +2,35 @@
   <div
     class="flex flex-col items-center text-center px-4 pt-4 justify-center flex-grow"
   >
-    <div class="font-black w-full text-[64px] leading-[64px] uppercase mb-6">
+    <div
+      v-if="!this.cooperativeRaffleEnabled"
+      class="font-black w-full text-[64px] leading-[64px] uppercase mb-6"
+    >
       BONUS <br />
       CHALLENGE
     </div>
+    <div
+      v-else
+      class="font-black w-full text-[64px] leading-[64px] uppercase mb-6 text-cobots-green"
+    >
+      Bonus prizes <br />
+      Unlocked!
+    </div>
     <text class="w-[326px] sm:w-[560px] text-[16px] leading-[24px] mb-4">
-      <text class="font-black"
-        >Unlock 20 more raffle prizes of 2.5 ETH each</text
-      >
-      by coordinating with the community to make 9,500 of the Co-Bots’ screens
-      the same colour before the raffle. Good luck!
+      <div v-if="!this.cooperativeRaffleEnabled">
+        <text class="font-black">
+          Unlock 20 more raffle prizes of 2.5 ETH each
+        </text>
+        by coordinating with the community to make 9,500 of the Co-Bots’ screens
+        the same colour before the raffle. Good luck!
+      </div>
+      <div v-else>
+        We knew you could do it!
+        <text class="font-black">
+          20 prizes of 2.5 ETH each will now be given out immediately after the
+          main prizes.
+        </text>
+      </div>
     </text>
     <div class="mb-10">
       <button
@@ -55,10 +74,17 @@ export default {
   },
   computed: {
     ...mapGetters("bonus", ["numRed", "numBlue", "coordinationThreshold"]),
-    ...mapGetters("layout", ["headerHeight"]),
+    ...mapGetters("contractState", ["cooperativeRaffleEnabled", "now"]),
   },
   methods: {
     ...mapActions("bonus", ["getNumBlue", "getBonusRaffleData"]),
+  },
+  watch: {
+    now() {
+      if (this.now % 5 == 0) {
+        this.getNumBlue();
+      }
+    },
   },
   mounted() {
     this.getBonusRaffleData();

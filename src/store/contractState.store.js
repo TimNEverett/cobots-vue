@@ -75,11 +75,15 @@ export default {
         commit(
           "SET_MINTED_OUT_TIMESTAMP",
           mintedOutTimestamp.toNumber() * 1000
+          // Date.now()
         );
-        commit("SET_MINTED_OUT_TIMESTAMP", Date.now());
 
         let mintRaffleDelay = await contract.COBOTS_MINT_RAFFLE_DELAY();
-        commit("SET_MINT_RAFFLE_DELAY", mintRaffleDelay.toNumber() * 1000);
+        commit(
+          "SET_MINT_RAFFLE_DELAY",
+          mintRaffleDelay.toNumber() * 1000
+          // 10000
+        );
       }
     },
     async getIsDrawOpen({ commit }) {
@@ -88,7 +92,7 @@ export default {
     },
     async getCooperativeRaffleEnabled({ commit }) {
       let isEnabled = await contract.cooperativeRaffleEnabled();
-      commit("SET_COOPERATIVE_RAFFLE_ENABLED", isEnabled);
+      commit("SET_COOPERATIVE_RAFFLE_ENABLED", isEnabled || true);
     },
   },
   getters: {
@@ -104,20 +108,23 @@ export default {
     canMint(state) {
       let endDate = state.publicSaleStartTimestamp + state.mintDuration;
       return state.isPublicSaleOpen && state.now < endDate;
+      // return false;
     },
     canFlip(state, getters) {
       if (getters.canMint) return false;
       let endDate = state.mintedOutTimestamp + state.mintRaffleDelay;
       return state.isMintedOut && state.now < endDate;
+      // return true;
     },
     cooperativeRaffleEnabled(state) {
-      return state.cooperativeRaffleEnabled || true;
+      return state.cooperativeRaffleEnabled;
     },
     maxSupply(state) {
       return state.maxSupply;
     },
     mintFailed(state, getters) {
       return !getters.canMint && !state.isMintedOut;
+      // return false;
     },
   },
 };

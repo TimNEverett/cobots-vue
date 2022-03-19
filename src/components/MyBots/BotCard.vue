@@ -19,6 +19,8 @@
       :class="{
         'bg-cobots-red': botColor === 'blue',
         'bg-sky-400': botColor === 'red',
+        'cursor-not-allowed': flipInProgress,
+        'opacity-50': flipInProgress,
       }"
       @click="toggleBotColor(index)"
     >
@@ -63,7 +65,7 @@ export default {
     index: Number,
   },
   computed: {
-    ...mapGetters("bots", ["imageByIndex", "colorByIndex"]),
+    ...mapGetters("bots", ["imageByIndex", "colorByIndex", "flipInProgress"]),
     ...mapGetters("contractState", ["canFlip"]),
     tokenURI() {
       return this.imageByIndex(this.index);
