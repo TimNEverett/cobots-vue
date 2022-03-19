@@ -19,10 +19,16 @@ export default {
   name: "WinnerCard",
   props: {
     index: Number,
+    bonus: Boolean,
   },
   computed: {
-    ...mapGetters("prizes", ["botByTokenIndex", "mainWinnerByIndex"]),
+    ...mapGetters("prizes", [
+      "botByTokenIndex",
+      "mainWinnerByIndex",
+      "bonusWinnersByIndex",
+    ]),
     tokenId() {
+      if (this.bonus) return this.bonusWinnersByIndex(this.index)?.tokenId;
       return this.mainWinnerByIndex(this.index)?.tokenId;
     },
     botImage() {
@@ -33,7 +39,7 @@ export default {
     ...mapActions("prizes", ["getBotForTokenIndex"]),
   },
   mounted() {
-    this.getBotForTokenIndex(this.tokenId);
+    if (this.tokenId) this.getBotForTokenIndex(this.tokenId);
   },
 };
 </script>

@@ -74,15 +74,15 @@ export default {
 
         commit(
           "SET_MINTED_OUT_TIMESTAMP",
-          // mintedOutTimestamp.toNumber() * 1000
-          Date.now()
+          mintedOutTimestamp.toNumber() * 1000
+          // Date.now()
         );
 
         let mintRaffleDelay = await contract.COBOTS_MINT_RAFFLE_DELAY();
         commit(
           "SET_MINT_RAFFLE_DELAY",
-          // mintRaffleDelay.toNumber() * 1000
-          10000
+          mintRaffleDelay.toNumber() * 1000
+          // 10000
         );
       }
     },
