@@ -1,7 +1,5 @@
 <template>
-  <text
-    class="mt-2 uppercase font-black text-sm text-center text-cobots-silver-2"
-  >
+  <text class="uppercase font-black text-sm text-center">
     <slot />
   </text>
 </template>

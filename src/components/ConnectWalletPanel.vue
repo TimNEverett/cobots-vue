@@ -3,7 +3,9 @@
     <cb-button :disabled="connecting" @click="openModal" class="mb-4">
       {{ buttonText }}
     </cb-button>
-    <scroll-label>scroll down for info.</scroll-label>
+    <scroll-label>
+      <text class="text-cobots-silver-2">scroll down for info.</text>
+    </scroll-label>
     <ConnectWalletModal v-if="modalOpen" @close="closeModal" />
   </div>
 </template>
