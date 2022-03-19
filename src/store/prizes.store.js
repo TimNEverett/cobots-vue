@@ -79,8 +79,20 @@ export default {
     mainWinners(state, getters) {
       return state.winners.slice(0, getters.mainDrawCount);
     },
+    mainWinnerByIndex: (state, getters) => (index) => {
+      if (state.drawCount - 1 > index) {
+        return getters.mainWinners[index];
+      }
+      return null;
+    },
     bonusWinners(state, getters) {
       return state.winners.slice(getters.mainWinnersCount, getters.drawCount);
+    },
+    bonusWinnersByIndex: (state, getters) => (index) => {
+      if (state.drawCount - 1 > index) {
+        return getters.bonusWinners[index];
+      }
+      return null;
     },
     botByTokenIndex: (state) => (index) => {
       return state.winningBots[index];

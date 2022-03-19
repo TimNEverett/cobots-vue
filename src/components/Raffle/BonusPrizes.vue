@@ -9,10 +9,10 @@
 
     <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2">
       <winner-card
-        v-for="w in bonusWinners"
-        :key="w.address"
-        :address="w.address"
-        :tokenId="w.tokenId"
+        v-for="i in bonusWinnersCount"
+        :key="i"
+        :index="i - 1"
+        bonus
       />
     </div>
   </div>
