@@ -74,11 +74,16 @@ export default {
 
         commit(
           "SET_MINTED_OUT_TIMESTAMP",
-          mintedOutTimestamp.toNumber() * 1000
+          // mintedOutTimestamp.toNumber() * 1000
+          Date.now()
         );
 
         let mintRaffleDelay = await contract.COBOTS_MINT_RAFFLE_DELAY();
-        commit("SET_MINT_RAFFLE_DELAY", mintRaffleDelay.toNumber() * 1000);
+        commit(
+          "SET_MINT_RAFFLE_DELAY",
+          // mintRaffleDelay.toNumber() * 1000
+          10000
+        );
       }
     },
     async getIsDrawOpen({ commit }) {
@@ -87,7 +92,7 @@ export default {
     },
     async getCooperativeRaffleEnabled({ commit }) {
       let isEnabled = await contract.cooperativeRaffleEnabled();
-      commit("SET_COOPERATIVE_RAFFLE_ENABLED", isEnabled);
+      commit("SET_COOPERATIVE_RAFFLE_ENABLED", isEnabled || true);
     },
   },
   getters: {

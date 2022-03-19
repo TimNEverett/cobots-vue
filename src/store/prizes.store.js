@@ -34,9 +34,10 @@ export default {
       let bonusCount = await contract.COORDINATION_RAFFLE_WINNERS_COUNT();
       commit("SET_BONUS_WINNERS_COUNT", bonusCount);
     },
-    async getDrawCount({ commit }) {
+    async getDrawCount({ commit, dispatch }) {
       let drawCount = await contract.drawCount();
       commit("SET_DRAW_COUNT", drawCount);
+      dispatch("getWinners");
     },
     async getWinners({ commit, state }) {
       let arr = [...Array(state.drawCount).keys()];

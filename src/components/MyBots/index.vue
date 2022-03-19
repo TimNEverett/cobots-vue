@@ -8,7 +8,7 @@
     >
       {{ buttonText }}
     </cb-button>
-    <div class="flex flex-col space-y-4 pb-5" v-else-if="!canFlip && hasBots">
+    <div class="flex flex-col space-y-4 pb-5" v-else-if="canFlip && hasBots">
       <button
         class="w-[320px] h-[65px] rounded-lg uppercase font-black text-[20px] leading-[20px] pt-[24px] pb-[20px] bg-sky-400"
         :class="{ 'opacity-50': allBlue, 'cursor-not-allowed': allBlue }"
