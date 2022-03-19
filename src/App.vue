@@ -3,9 +3,7 @@
     <div
       v-if="siteClosed"
       class="w-screen h-screen flex flex-col justify-center items-center"
-    >
-      <img src="./images/Bot-Illustration.svg" />
-    </div>
+    ></div>
     <div v-else>
       <header-vue />
       <main>
