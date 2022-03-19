@@ -18,11 +18,13 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "WinnerCard",
   props: {
-    address: String,
-    tokenId: Number,
+    index: Number,
   },
   computed: {
-    ...mapGetters("prizes", ["botByTokenIndex"]),
+    ...mapGetters("prizes", ["botByTokenIndex", "mainWinnerByIndex"]),
+    tokenId() {
+      return this.mainWinnerByIndex(this.index)?.tokenId;
+    },
     botImage() {
       return this.botByTokenIndex(this.tokenId);
     },

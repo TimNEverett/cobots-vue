@@ -8,12 +8,7 @@
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2">
-      <winner-card
-        v-for="w in mainWinners"
-        :key="w.idx"
-        :address="w.address"
-        :tokenId="w.tokenId"
-      />
+      <winner-card v-for="i in mainWinnersCount" :key="i" :index="i" />
     </div>
   </div>
 </template>

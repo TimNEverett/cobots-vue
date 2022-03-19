@@ -68,8 +68,8 @@ export default {
     },
     async getIsMintedOut({ commit }) {
       let isMintedOut = await contract.isMintedOut();
-      commit("SET_IS_MINTED_OUT", isMintedOut);
-      if (isMintedOut) {
+      commit("SET_IS_MINTED_OUT", isMintedOut || true);
+      if (isMintedOut || true) {
         let mintedOutTimestamp = await contract.mintedOutTimestamp();
 
         commit(
@@ -82,13 +82,13 @@ export default {
         commit(
           "SET_MINT_RAFFLE_DELAY",
           // mintRaffleDelay.toNumber() * 1000
-          60000
+          10000
         );
       }
     },
     async getIsDrawOpen({ commit }) {
       let isOpen = await contract.isDrawOpen();
-      commit("SET_IS_DRAW_OPEN", isOpen);
+      commit("SET_IS_DRAW_OPEN", isOpen || true);
     },
     async getCooperativeRaffleEnabled({ commit }) {
       let isEnabled = await contract.cooperativeRaffleEnabled();
@@ -107,7 +107,8 @@ export default {
     },
     canMint(state) {
       let endDate = state.publicSaleStartTimestamp + state.mintDuration;
-      return state.isPublicSaleOpen && state.now < endDate;
+      // return state.isPublicSaleOpen && state.now < endDate;
+      return false;
     },
     canFlip(state, getters) {
       if (getters.canMint) return false;
