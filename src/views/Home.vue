@@ -13,7 +13,9 @@
       >
         <wallet-button @viewBots="scrollToMyBots" />
       </div>
-      <connect-wallet-panel v-if="!walletConnected && !canFlip && canMint" />
+      <connect-wallet-panel
+        v-if="!walletConnected && !canFlip && (canMint || refundEnabled)"
+      />
       <refund v-else-if="refundEnabled" />
       <mint-panel v-else-if="canMint" />
       <div class="flex-grow" v-else-if="mintFailed"></div>
