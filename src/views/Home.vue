@@ -2,7 +2,10 @@
   <div class="overflow-hidden overscroll-none">
     <div
       class="flex flex-col justify-center items-center mt-[72px]"
-      :class="{ 'h-[calc(100vh-72px)]': canFlip || canMint || mintFailed }"
+      :class="{
+        'h-[calc(100vh-72px)]':
+          canFlip || canMint || mintFailed || refundEnabled,
+      }"
     >
       <div
         v-if="walletConnected"
@@ -11,6 +14,7 @@
         <wallet-button @viewBots="scrollToMyBots" />
       </div>
       <connect-wallet-panel v-if="!walletConnected && !canFlip && canMint" />
+      <refund v-else-if="refundEnabled" />
       <mint-panel v-else-if="canMint" />
       <div class="flex-grow" v-else-if="mintFailed"></div>
       <bonus-challenge-panel
@@ -48,6 +52,7 @@ import MintPanel from "@/components/MintPanel.vue";
 import BonusChallengePanel from "@/components/BonusChallenge/index.vue";
 import { mapGetters, mapActions } from "vuex";
 import Raffle from "@/components/Raffle/index.vue";
+import Refund from "@/components/Refund.vue";
 
 export default {
   name: "Home",
@@ -59,9 +64,11 @@ export default {
     MintPanel,
     BonusChallengePanel,
     Raffle,
+    Refund,
   },
   data: () => ({
     interval: null,
+    refundEnabled: false,
   }),
   computed: {
     ...mapGetters("eth", ["walletConnected", "walletAddress"]),
@@ -116,6 +123,7 @@ export default {
     this.getIsPublicSaleOpen();
     this.getIsMintedOut();
     this.getMintInfo();
+    this.refundEnabled = import.meta.env.VITE_IN_REFUND == "true";
   },
   beforeUnmount() {
     clearInterval(this.interval);
