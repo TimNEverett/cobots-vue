@@ -6,7 +6,7 @@
     >
       <cb-button
         class="mb-4"
-        :disabled="refundInProgress"
+        :disabled="refundInProgress || !refundActionEnabled"
         @click="claimRefund(myBots)"
       >
         {{ buttonText }}
@@ -40,7 +40,11 @@ export default {
     scrollLabel,
   },
   computed: {
-    ...mapGetters("refund", ["refundInProgress", "refundComplete"]),
+    ...mapGetters("refund", [
+      "refundInProgress",
+      "refundComplete",
+      "refundActionEnabled",
+    ]),
     ...mapGetters("bots", ["myBots"]),
     buttonText() {
       if (this.refundInProgress) return "claiming refund ...";
@@ -52,6 +56,7 @@ export default {
   },
   watch: {
     myBots(newval) {
+      console.log(newval);
       if (newval.length > 0) this.checkHasRefunded(newval);
     },
   },

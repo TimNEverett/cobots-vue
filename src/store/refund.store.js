@@ -5,6 +5,7 @@ export default {
   state: () => ({
     refundInProgress: false,
     refundComplete: false,
+    refundActionEnabled: false,
   }),
   mutations: {
     SET_REFUND_IN_PROGRESS(state, inProgress) {
@@ -13,12 +14,23 @@ export default {
     SET_REFUND_COMPLETE(state, complete) {
       state.refundComplete = complete;
     },
+    SET_REFUND_ACTION_ENABLED(state, enabled) {
+      state.refundActionEnabled = enabled;
+    },
   },
   actions: {
     async claimRefund({ commit }, botIds) {
       commit("SET_REFUND_IN_PROGRESS", true);
       try {
-        const transaction = await contract.claimRefund(botIds);
+        const botsToRefund = await Promise.all(
+          botIds.map(async (i) => {
+            let isRefunded = await contract.coBotsRefunded(i);
+            return isRefunded ? null : i;
+          })
+        );
+        const refundIds = botsToRefund.filter((i) => i != null);
+        console.log({ refundIds });
+        const transaction = await contract.claimRefund(refundIds);
         await transaction.wait();
 
         // const sleep = (callback, ms) => {
@@ -42,6 +54,7 @@ export default {
       );
       const allBotsRefunded = hasRefunded.every((i) => i);
       commit("SET_REFUND_COMPLETE", allBotsRefunded);
+      commit("SET_REFUND_ACTION_ENABLED", !allBotsRefunded);
     },
   },
   getters: {
@@ -50,6 +63,9 @@ export default {
     },
     refundComplete(state) {
       return state.refundComplete;
+    },
+    refundActionEnabled(state) {
+      return state.refundActionEnabled;
     },
   },
 };
