@@ -22,7 +22,7 @@
           <p class="text-cobots-silver-2 mr-1">MINT PRICE:</p>
           <p class="text-white font-black">{{ mintPrice }} ETH</p>
         </div>
-        <count-down />
+        <count-down v-if="!refundEnabled" />
       </div>
 
       <social-media-buttons class="hidden sm:flex" />
@@ -42,6 +42,9 @@ export default {
     SocialMediaButtons,
     CountDown,
   },
+  data: () => ({
+    refundEnabled: false,
+  }),
   computed: {
     ...mapGetters("mint", ["totalSupply", "mintPrice", "mintLimit"]),
     ...mapGetters("contractState", ["canMint", "maxSupply", "now"]),
@@ -64,6 +67,7 @@ export default {
   },
   mounted() {
     this.getTotalSupply();
+    this.refundEnabled = import.meta.env.VITE_IN_REFUND == "true";
   },
 };
 </script>
