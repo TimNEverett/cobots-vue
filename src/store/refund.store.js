@@ -18,18 +18,18 @@ export default {
     async claimRefund({ commit }, botIds) {
       commit("SET_REFUND_IN_PROGRESS", true);
       try {
-        // const transaction = await contract.claimRefund(botIds);
-        // await transaction.wait();
+        const transaction = await contract.claimRefund(botIds);
+        await transaction.wait();
 
-        const sleep = (callback, ms) => {
-          setInterval(callback, ms);
-        };
-        await new Promise((resolve) => {
-          sleep(resolve, 2000);
-        });
+        // const sleep = (callback, ms) => {
+        //   setInterval(callback, ms);
+        // };
+        // await new Promise((resolve) => {
+        //   sleep(resolve, 2000);
+        // });
         commit("SET_REFUND_COMPLETE", true);
       } catch (e) {
-        console.log(e);
+        console.log(e.message);
       }
       commit("SET_REFUND_IN_PROGRESS", false);
     },

@@ -78,6 +78,7 @@ export default {
     ...mapGetters("contractState", ["canMint", "canFlip", "mintFailed"]),
     ...mapGetters("mint", ["mintSuccessful"]),
     showBots() {
+      if (this.refundEnabled && !this.walletConnected) return false;
       if (this.hasBots && this.walletConnected) return true;
       if (!this.walletConnected && this.canFlip) return true;
       if (!this.walletConnected && !this.canFlip && !this.canMint) return true;
