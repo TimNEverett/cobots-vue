@@ -24,7 +24,7 @@
     "@rollup/plugin-inject": "^4.0.4",
     "@tailwindcss/aspect-ratio": "^0.4.0",
     "@tailwindcss/forms": "^0.4.0",
-    "@tailwindcss/line-clamp": "^0.3.1",
+    "@tailwindcss/line-clamp": "^0.4.0",
     "@tailwindcss/typography": "^0.5.1",
     "@types/tailwindcss": "^3.0.7",
     "@vitejs/plugin-vue": "^2.2.0",
